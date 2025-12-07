@@ -42,7 +42,7 @@ if (isset($_GET['user'])) {
 
         <!-- منوی بازشونده فقط وقتی لاگین است -->
         <div class="user-dropdown">
-            <a href="orderStatus.html">سفارش‌های من</a>
+            <a href="orderStatus.php">سفارش‌های من</a>
             <a href="wallet.html">کیف پول من</a>
             <a href="logOut.php">خروج</a>
         </div>
