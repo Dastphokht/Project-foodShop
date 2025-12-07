@@ -37,7 +37,7 @@ $orderResult = mysqli_query($conn, $orderQuery);
 
 <?php while ($order = mysqli_fetch_assoc($orderResult)): ?>
 
-    <div class="order-card">
+    <div class="order-card" id="order-<?= $order['order_ID'] ?>">
 
         <!-- هدر سفارش -->
         <div class="order-header">
@@ -100,6 +100,67 @@ $orderResult = mysqli_query($conn, $orderQuery);
     </div>
 
 <?php endwhile; ?>
+
+<script>
+function checkStatusUpdates() {
+
+    fetch("getOrderStatus.php")
+        .then(res => res.json())
+        .then(data => {
+
+            Object.keys(data).forEach(orderId => {
+
+                let newStatus = data[orderId];
+                let statusElement = document.querySelector(`#order-${orderId} .status`);
+
+                if (!statusElement) return;
+
+                // گرفتن وضعیت فعلی
+                let currentText = statusElement.textContent.trim();
+
+                // مقایسه وضعیت‌های جدید با متن قبلی
+                let newText = "";
+
+                switch (newStatus) {
+                    case "registered": newText = "در انتظار ثبت سفارش"; break;
+                    case "preparing": newText = "در حال آماده‌سازی"; break;
+                    case "delivering": newText = "در حال ارسال"; break;
+                    case "canceled": newText = "لغو شده"; break;
+                }
+
+                // اگر تغییر کرده؟
+                if (currentText !== newText) {
+
+                    // آپدیت متن
+                    statusElement.textContent = newText;
+
+                    // تغییر کلاس‌های رنگی
+                    statusElement.classList.remove("registered", "preparing","delivering", "canceled");
+
+                    if (newStatus === "registered") statusElement.classList.add("registered");
+                    if (newStatus === "preparing") statusElement.classList.add("preparing");
+                    if (newStatus === "delivering") statusElement.classList.add("delivering");
+                    if (newStatus === "canceled") statusElement.classList.add("canceled");
+
+                    // انیمیشن برای توجه بیشتر
+                    statusElement.style.transition = "0.3s";
+                    statusElement.style.transform = "scale(1.1)";
+                    setTimeout(() => {
+                        statusElement.style.transform = "scale(1)";
+                    }, 300);
+
+                }
+
+            });
+
+        });
+
+}
+
+// هر ۵ ثانیه وضعیت را چک کن
+setInterval(checkStatusUpdates, 2000);
+</script>
+
 
 </body>
 </html>
