@@ -74,7 +74,7 @@ confirmBtn.addEventListener('click', () => {
     // 2. تنظیم نوع پرداخت به "wallet"
     localStorage.setItem('payType', 'wallet'); 
 
-    // 3. ریدایرکت به صفحه درگاه
-    window.location.href = 'dargah.php'; 
+    // 3. ریدایرکت به صفحه درگاه (با mode=wallet)
+    window.location.href = 'dargah.php?mode=wallet'; 
 
 });

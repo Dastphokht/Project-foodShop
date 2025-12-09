@@ -2,8 +2,12 @@ const amountEl = document.getElementById("payment-amount");
 let finalAmount = localStorage.getItem("payableAmount") || 250000;
 amountEl.textContent = Number(finalAmount).toLocaleString("fa-IR") + " تومان";
 
-// ✨ جدید: خواندن نوع پرداخت از localStorage
-const payType = localStorage.getItem("payType") || "unknown"; 
+console.log("dargah.js LOADED. finalAmount =", finalAmount);
+
+
+// نوع پرداخت را از input مخفی که PHP گذاشته می‌خوانیم
+const payTypeInputEl = document.getElementById("js-pay-type");
+const payType = payTypeInputEl ? payTypeInputEl.value : "order";
 
 // تایمر معکوس 10 دقیقه
 let time = 10 * 60; // 10 دقیقه
@@ -59,7 +63,6 @@ emailInput.addEventListener("input", function(){
 
 // اعتبارسنجی فرم
 document.getElementById("payForm").addEventListener("submit", function(e){
-  e.preventDefault();
 
   const fields = [
     {
@@ -118,25 +121,22 @@ document.getElementById("payForm").addEventListener("submit", function(e){
     }
   });
 
-  if(isValid){
-    // ✨ جدید: اگر اعتبارسنجی موفق بود، نوع پرداخت و مبلغ را به صورت مخفی به فرم اضافه کن
-    
-    // 1. افزودن payType
-    const payTypeInput = document.createElement('input');
-    payTypeInput.type = 'hidden';
-    payTypeInput.name = 'pay_type';
-    payTypeInput.value = payType;
-    this.appendChild(payTypeInput);
-    
-    // 2. افزودن مبلغ نهایی (اختیاری اما توصیه شده برای امنیت بیشتر)
-    const amountInput = document.createElement('input');
+  console.log("validation result isValid =", isValid);
+
+  // ❌ اگر نامعتبر بود، جلوی ارسال را بگیر
+  if (!isValid) {
+    e.preventDefault();
+    return;
+  }
+
+  // ✅ اگر معتبر بود، فقط فیلد مبلغ را اضافه کن و بگذار submit خودش انجام شود
+  let amountInput = this.querySelector('input[name="final_amount"]');
+  if (!amountInput) {
+    amountInput = document.createElement('input');
     amountInput.type = 'hidden';
     amountInput.name = 'final_amount';
-    // تبدیل تومان فارسی به عدد انگلیسی (فقط عدد)
-    amountInput.value = finalAmount; 
     this.appendChild(amountInput);
-
-    // ارسال فرم
-    this.submit();
   }
+  amountInput.value = finalAmount; 
+  // دیگه e.preventDefault و this.submit لازم نیست
 });

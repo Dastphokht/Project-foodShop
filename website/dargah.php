@@ -15,6 +15,7 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'wallet') {
     // پیش‌فرض: پرداخت سفارش
     $_SESSION['pay_type'] = 'order';
 }
+$payType = isset($_SESSION['pay_type']) ? $_SESSION['pay_type'] : 'order';
 
 ?>
 
@@ -48,9 +49,12 @@ if (isset($_GET['mode']) && $_GET['mode'] === 'wallet') {
             </div>
         </div>
         <div class="payment-left">
-            <form id="payForm" action="process_payment.php" method="POST">
-                <!-- نوع پرداخت: سفارش غذا -->
-                <input type="hidden" name="pay_type" value="order">
+        <form id="payForm" action="process_payment.php" method="POST">
+    <!-- نوع پرداخت بر اساس mode (wallet / order) -->
+    <input type="hidden" name="pay_type" value="<?php echo htmlspecialchars($payType, ENT_QUOTES, 'UTF-8'); ?>">
+    <!-- اگر خواستی از JS هم بفهمیم wallet هست یا نه -->
+    <input type="hidden" id="js-pay-type" value="<?php echo htmlspecialchars($payType, ENT_QUOTES, 'UTF-8'); ?>">
+
 
                 
 
