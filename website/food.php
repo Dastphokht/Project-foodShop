@@ -72,12 +72,8 @@ while ($row = mysqli_fetch_array($foods)) {
                     <span class="total-amount">0 تومان</span>
                 </div>
             </div>
-            <?php if (isset($_SESSION['user_id'])): ?>
-                <button class="checkout-btn" id="checkout-btn">رفتن به سبد خرید</button>
-            <?php else: ?>
-                <button class="checkout-btn" id="login-btn">برای پرداخت وارد شوید</button>
-            <?php endif; ?>
-        </aside>
+            <button class="checkout-btn" id="checkout-btn">رفتن به سبد خرید</button>
+            </aside>
     </div>
 
     <div class="modal hidden">
@@ -98,11 +94,8 @@ while ($row = mysqli_fetch_array($foods)) {
                     <span class="quantity">1</span>
                     <button class="quantity-btn increase">+</button>
                 </div>
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <button class="add-to-cart-modal-btn">افزودن به سبد خرید</button>
-                <?php else: ?>
-                    <button class="add-to-cart-modal-btn" id="login-modal-btn">برای افزودن وارد شوید</button>
-                <?php endif; ?>
+                <button class="add-to-cart-modal-btn">افزودن به سبد خرید</button>
+
             </div>
         </div>
     </div>

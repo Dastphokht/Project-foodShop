@@ -112,6 +112,7 @@
             alertBox.style.backgroundColor = bgColor;
             alertBox.style.setProperty('--progress-color', progressColor);
             showCustomAlert(message);
+            /*
             if (message.includes('خوش آمدید')) {
                 let redirect = urlParams.get('redirect') || 'food.php?index=1';
                 // اگر redirect کدگذاری شده بود، آن را decode کن
@@ -124,6 +125,7 @@
                     window.location.href = redirect + '&user=' + encodeURIComponent(user);
                 }, 1500);
             }
+            */
             setTimeout(() => {
                 const newUrl = window.location.pathname;
                 window.history.replaceState({}, document.title, newUrl);

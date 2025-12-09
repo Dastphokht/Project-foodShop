@@ -24,7 +24,24 @@ if (isset($_POST['input_user']) && !empty($_POST['input_user']) &&
         $_SESSION['username'] = $row['user_Name'];
         $_SESSION['user_id'] = $row['user_ID'];
         $_SESSION['last_activity'] = time();
-        header("Location: " . $redirect . "&msg=" . urlencode('خوش آمدید') . "&user=" . urlencode($row['full_Name']));
+       // header("Location: " . $redirect . "&msg=" . urlencode('خوش آمدید') . "&user=" . urlencode($row['full_Name']));
+       
+        // مطمئن می‌شیم redirect همیشه یه آدرس معتبره
+        $redirect = isset($_POST['redirect']) && !empty($_POST['redirect'])
+        ? $_POST['redirect']
+        : 'food.php?index=1';
+
+        // اگر داخل redirect قبلاً ? نبود، یعنی هنوز پارامتر نداره → ? بذار
+        // اگر ? داشت، یعنی خودش پارامتر داره → & بذار
+        $separator = (strpos($redirect, '?') === false) ? '?' : '&';
+
+        header(
+        "Location: " .
+        $redirect .
+        $separator .
+        "msg=" . urlencode('خوش آمدید') .
+        "&user=" . urlencode($row['full_Name'])
+        );
         exit();
     } else {
         header("Location: login.html?msg=" . urlencode('نام کاربری یا کلمه عبور اشتباه است'));

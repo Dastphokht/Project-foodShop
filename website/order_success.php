@@ -22,7 +22,9 @@
         localStorage.removeItem('cartItems');
         localStorage.removeItem('finalAmount');
         localStorage.removeItem('payableAmount');
-        // در صورت نیاز، موارد دیگر را نیز پاک کنید
+        localStorage.removeItem("payType");
+        localStorage.clear();
+
     </script>
 </body>
 </html>

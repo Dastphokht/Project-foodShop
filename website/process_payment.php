@@ -3,6 +3,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+
 // ⚠️ ۱. بررسی لاگین کاربر
 if (!isset($_SESSION["user_id"])) {
     header("Location: login.html?redirect=dargah.php");
@@ -92,14 +93,20 @@ if ($payType === 'wallet') {
         $stmt->execute();
     }
 
-    // ۴. اتمام موفقیت‌آمیز سفارش
-    unset($_SESSION["cart"]);
-    unset($_SESSION["order_info"]);
-
-    // ⬅️ انتقال به صفحه موفقیت سفارش
-    header("Location: order_success.php?order_id=" . $order_id);
-    exit();
-
+        // ۴. اتمام موفقیت‌آمیز سفارش
+        unset($_SESSION["cart"]);
+        unset($_SESSION["order_info"]);
+    
+        // پاک کردن سبد خرید دیتابیس بعد از پرداخت موفق
+        $deleteCart = $db->prepare("DELETE FROM carts WHERE user_ID = ?");
+        $deleteCart->bind_param("i", $user_id);
+        $deleteCart->execute();
+        $deleteCart->close();
+    
+        // ⬅️ انتقال به صفحه موفقیت سفارش
+        header("Location: order_success.php?order_id=" . $order_id);
+        exit();
+    
 } else {
     // ------------------------------------------------
     // حالت ۳: نوع پرداخت نامشخص

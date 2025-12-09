@@ -20,6 +20,14 @@
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
         });
+        
+        // وقتی کاربر از logout منتقل شده
+        if (document.referrer.includes("LogOut.php")) {
+            localStorage.removeItem("cartItems");
+            localStorage.removeItem("payType");
+            localStorage.removeItem("payableAmount");
+            localStorage.removeItem("finalAmount");
+        }
     </script>
 </head>
 <body>

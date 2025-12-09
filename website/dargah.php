@@ -8,6 +8,14 @@ if (!isset($_SESSION["user_id"])) {
     header("Location: login.html?redirect=dargah.php");
     exit();
 }
+// اگر از صفحه شارژ کیف پول آمدی:
+if (isset($_GET['mode']) && $_GET['mode'] === 'wallet') {
+    $_SESSION['pay_type'] = 'wallet';
+} else {
+    // پیش‌فرض: پرداخت سفارش
+    $_SESSION['pay_type'] = 'order';
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +49,12 @@ if (!isset($_SESSION["user_id"])) {
         </div>
         <div class="payment-left">
             <form id="payForm" action="process_payment.php" method="POST">
+                <!-- نوع پرداخت: سفارش غذا -->
+                <input type="hidden" name="pay_type" value="order">
+
+                
+
+
                 <div class="form-group">
                     <label>شماره کارت</label>
                     <input type="text" id="card" name="card_number" maxlength="16" placeholder="6037 99xx xxxx xxxx">

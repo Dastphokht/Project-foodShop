@@ -1,11 +1,6 @@
 <?php
 session_start();
-
-// بررسی لاگین کاربر
-if (!isset($_SESSION["user_id"])) {
-    header("Location: login.html?redirect=shoppingCart.php");
-    exit();
-}
+$userLoggedIn = isset($_SESSION["user_id"]);
 ?>
 
 <!DOCTYPE html>
@@ -13,6 +8,7 @@ if (!isset($_SESSION["user_id"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="user-logged-in" content="<?php echo $userLoggedIn ? 'true' : 'false'; ?>">
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="css/shoppingCart.css">
     <title>سبد خرید</title>
@@ -34,9 +30,17 @@ if (!isset($_SESSION["user_id"])) {
                 <input type="text" placeholder="کد تخفیف" class="discount-input" />
                 <button class="apply-discount">اعمال تخفیف</button>
             </div>
-            <a href="information.php">
-                <button class="pay-btn">پرداخت</button>
-            </a>
+            <?php if (isset($_SESSION['user_id'])): ?>
+    <!-- کاربر لاگین است: مستقیم برود به مرحله اطلاعات/پرداخت -->
+    <a href="information.php">
+        <button class="pay-btn">پرداخت</button>
+    </a>
+    <?php else: ?>
+        <!-- کاربر لاگین نیست: اول وارد شود، بعد برگردد به همین سبد خرید -->
+        <a href="login.html?redirect=shoppingCart.php">
+            <button class="pay-btn">برای پرداخت وارد شوید</button>
+        </a>
+    <?php endif; ?>
         </div>
     </div>
    
