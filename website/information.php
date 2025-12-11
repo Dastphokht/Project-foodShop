@@ -9,6 +9,18 @@ if (!isset($_SESSION["user_id"])) {
 
 $isWalletPayment = isset($_GET["wallet"]) && $_GET["wallet"] == "1";
 
+// 📦 خواندن هزینه ارسال از دیتابیس
+$shippingCost = 25000; // مقدار پیش‌فرض اگر دیتابیس مشکلی داشت
+
+$mysqli = new mysqli("localhost", "root", "", "daspokht");
+if (!$mysqli->connect_error) {
+    $res = $mysqli->query("SELECT cost FROM shipping_settings WHERE shop_ID = 1 LIMIT 1");
+    if ($res && $row = $res->fetch_assoc()) {
+        $shippingCost = (int)$row['cost'];
+    }
+    $res->free();
+    $mysqli->close();
+}
 
 // اگر کاربر لاگین کرده بود، ادامه کد اجرا می‌شود
 ?>
@@ -54,8 +66,14 @@ $isWalletPayment = isset($_GET["wallet"]) && $_GET["wallet"] == "1";
                 </div>
                 <div class="form-group">
                     <label>هزینه ارسال:</label>
-                    <div id="shipping-cost-text">25,000 تومان</div>
-                </div>
+                <div
+                    id="shipping-cost-text"
+                    data-shipping="<?php echo $shippingCost; ?>"
+                >
+        <?php echo number_format($shippingCost) . " تومان"; ?>
+    </div>
+</div>
+
                 <div class="form-group">
                     <label>قابل پرداخت:</label>
                     <div id="payable-amount-text">0 تومان</div>

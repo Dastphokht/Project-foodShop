@@ -6,7 +6,7 @@ const shippingCostText = document.getElementById("shipping-cost-text");
 const payableAmountText = document.getElementById("payable-amount-text");
 const form = document.getElementById("customer-form");
 
-const SHIPPING_COST = 25000;
+//const SHIPPING_COST = 25000;
 const persianRegex = /^[\u0600-\u06FF\s]+$/;      // فقط حروف فارسی و فاصله
 const addressRegex = /^[\u0600-\u06FF0-9\s,]+$/;  // فارسی، عدد، فاصله، ویرگول
 
@@ -16,23 +16,32 @@ const formatPrice = num => Number(num).toLocaleString("fa-IR") + " تومان";
 // نمایش جزئیات سفارش در بارگذاری اولیه
 // ------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. خواندن مبلغ سفارش از localStorage
+    // 1. مبلغ سفارش از localStorage
     let orderTotal = Number(localStorage.getItem("finalAmount")) || 0;
 
-    let payableAmount = orderTotal + SHIPPING_COST;
+    // 2. هزینه ارسال از data-shipping روی div
+    const shippingDiv = document.getElementById("shipping-cost-text");
+    let shippingCost = 0;
 
-    // 2. ذخیره مبلغ قابل پرداخت نهایی در localStorage
+    if (shippingDiv && shippingDiv.dataset.shipping) {
+        shippingCost = Number(shippingDiv.dataset.shipping) || 0;
+    }
+
+    // 3. محاسبه مبلغ قابل پرداخت
+    let payableAmount = orderTotal + shippingCost;
+
+    // 4. ذخیره مبلغ قابل پرداخت نهایی در localStorage (برای درگاه / کیف پول)
     localStorage.setItem("payableAmount", payableAmount);
 
-    // 3. نمایش مقادیر
-    orderTotalText.textContent = formatPrice(orderTotal);
-    shippingCostText.textContent = formatPrice(SHIPPING_COST);
-    payableAmountText.textContent = formatPrice(payableAmount);
+    // 5. نمایش مقادیر
+    orderTotalText.textContent     = formatPrice(orderTotal);
+    shippingCostText.textContent   = formatPrice(shippingCost);
+    payableAmountText.textContent  = formatPrice(payableAmount);
 
-    // بعد از اینکه DOM کامل شد، دکمه‌ها را وصل کنیم
+    // بقیه کد: لیسنرهای pay-online / pay-wallet / cancel
     const payOnlineBtn = document.getElementById("pay-online");
     const payWalletBtn = document.getElementById("pay-wallet");
-    const cancelBtn = document.getElementById("cancel");
+    const cancelBtn    = document.getElementById("cancel");
 
     if (payOnlineBtn) {
         payOnlineBtn.addEventListener("click", () => {
@@ -52,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
 
 // ------------------------------
 // تابع اعتبارسنجی فرم

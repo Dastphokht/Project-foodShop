@@ -26,6 +26,19 @@ if ($db->connect_error) {
     die("خطا در اتصال به دیتابیس: " . $db->connect_error);
 }
 
+// تابع کمکی: گرفتن هزینه ارسال از دیتابیس در صورت نیاز
+function getShippingCostFromDB($db) {
+    $default = 25000;
+    $res = $db->query("SELECT cost FROM shipping_settings WHERE shop_ID = 1 LIMIT 1");
+    if ($res && $row = $res->fetch_assoc()) {
+        $cost = (int)$row['cost'];
+        $res->free();
+        return $cost;
+    }
+    if ($res) $res->free();
+    return $default;
+}
+
 // ------------------------------------------------
 // 🔍 تشخیص نوع پرداخت
 // ------------------------------------------------
@@ -64,9 +77,14 @@ elseif ($payType === 'wallet_order') {
     }
 
     // هزینه ارسال از سشن
-    $shipping_cost = isset($_SESSION["order_info"]["shipping_cost"])
-        ? floatval($_SESSION["order_info"]["shipping_cost"])
-        : 0;
+  // هزینه ارسال از سشن (در صورت نبود → از دیتابیس)
+if (isset($_SESSION["order_info"]["shipping_cost"])) {
+    $shipping_cost = floatval($_SESSION["order_info"]["shipping_cost"]);
+} else {
+    $shipping_cost = (float) getShippingCostFromDB($db);
+}
+
+
 
     // مبلغ کامل فاکتور (غذا بدون تخفیف + ارسال)
     $full_total = $total_price_from_session + $shipping_cost;
@@ -163,9 +181,13 @@ elseif ($payType === 'order') {
     }
 
     // هزینه ارسال از سشن
-    $shipping_cost = isset($_SESSION["order_info"]["shipping_cost"])
-        ? floatval($_SESSION["order_info"]["shipping_cost"])
-        : 0;
+// هزینه ارسال از سشن (در صورت نبود → از دیتابیس)
+if (isset($_SESSION["order_info"]["shipping_cost"])) {
+    $shipping_cost = floatval($_SESSION["order_info"]["shipping_cost"]);
+} else {
+    $shipping_cost = (float) getShippingCostFromDB($db);
+}
+
 
     // مبلغ کامل فاکتور (غذا بدون تخفیف + ارسال)
     $full_total = $total_price_from_session + $shipping_cost;

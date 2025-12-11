@@ -7,14 +7,27 @@ if (!isset($_SESSION["user_id"])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
-    // ... (ذخیره order_info)
+
+    // 📦 خواندن هزینه ارسال از دیتابیس به‌صورت داینامیک
+    $shippingCost = 25000; // مقدار پیش‌فرض
+
+    $db = new mysqli("localhost", "root", "", "daspokht");
+    if (!$db->connect_error) {
+        $res = $db->query("SELECT cost FROM shipping_settings WHERE shop_ID = 1 LIMIT 1");
+        if ($res && $row = $res->fetch_assoc()) {
+            $shippingCost = (int)$row['cost'];
+        }
+        if ($res) $res->free();
+        $db->close();
+    }
+
+    // ذخیره اطلاعات سفارش در سشن
     $_SESSION["order_info"] = [
         "first_name" => $_POST["first_name"] ?? null,
-        "last_name" => $_POST["last_name"] ?? null,
-        "city" => $_POST["city"] ?? null,
-        "address" => $_POST["address"] ?? null,
-        "shipping_cost" => 25000, 
+        "last_name"  => $_POST["last_name"] ?? null,
+        "city"       => $_POST["city"] ?? null,
+        "address"    => $_POST["address"] ?? null,
+        "shipping_cost" => $shippingCost,  // ✅ داینامیک
     ];
     
     $cart_data_json = $_POST['cart_data'] ?? null;
@@ -23,18 +36,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['cart'] = [];
     if (!empty($cart_items) && is_array($cart_items)) {
         foreach ($cart_items as $item) {
-            
-            // ⬅️ اصلاح ۱: نام کلیدها را برای هماهنگی با process_payment.php تنظیم کنید
-            // فرض می‌کنیم در جاوا اسکریپت کلیدها 'id' و 'qty' هستند.
-            $food_id = $item['id'] ?? null; 
-            $price = $item['price'] ?? 0;
-            $quantity = $item['qty'] ?? 0; // استفاده از 'qty'
+            $food_id  = $item['id']   ?? null; 
+            $price    = $item['price'] ?? 0;
+            $quantity = $item['qty']   ?? 0;
 
             if ($food_id) {
                 $_SESSION['cart'][] = [
-                    "food_id" => $food_id,  // ⬅️ کلید food_id برای خطای ۳۹
-                    "qty" => $quantity,     // ⬅️ کلید qty برای اخطار خط ۲۴ در process_payment.php
-                    "price" => $price,
+                    "food_id" => $food_id,
+                    "qty"     => $quantity,
+                    "price"   => $price,
                 ];
             }
         }
