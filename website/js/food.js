@@ -144,10 +144,11 @@ if (localStorage.getItem("cartItems")) {
         const loadedCart = JSON.parse(localStorage.getItem("cartItems"));
 
         cart = loadedCart.map(item => ({
-            id: String(item.id),                      //  همیشه رشته
+            id: String(item.id),
             name: item.name,
-            price: Number(item.price),               // عدد
-            qty: Number(item.qty ?? item.quantity ?? 1) // تعداد
+            price: Number(item.price),
+            qty: Number(item.qty ?? item.quantity ?? 1),
+            stock: item.stock !== undefined ? Number(item.stock) : 10
         }));
     } catch (e) {
         console.error("خطا در خواندن سبد خرید:", e);
@@ -167,18 +168,43 @@ const saveCart = () => {
 // تابع مرکزی افزودن به سبد خرید
 // ------------------------------------
 function addToCart(newItem) {
-    const existingItem = cart.find(item => item.id === newItem.id);
+    const existingItem = cart.find(item => item.id === newItem.id);
 
-    if (existingItem) {
-        existingItem.qty += newItem.qty;
-        if (existingItem.qty > 10) existingItem.qty = 10;
-    } else {
-        cart.push(newItem);
-    }
-    
-    saveCart();
-    renderCart();
+    // حداکثر موجودی قابل سفارش
+    const maxStock = Number(
+        newItem.stock !== undefined
+            ? newItem.stock
+            : existingItem?.stock !== undefined
+                ? existingItem.stock
+                : 10
+    );
+
+    if (existingItem) {
+        const desiredQty = existingItem.qty + newItem.qty;
+
+        if (desiredQty > maxStock) {
+            existingItem.qty = maxStock;
+            alert("حداکثر موجودی قابل سفارش برای این غذا " + maxStock + " عدد است.");
+        } else {
+            existingItem.qty = desiredQty;
+        }
+        existingItem.stock = maxStock;
+    } else {
+        // اولین بار است اضافه می‌شود
+        newItem.stock = maxStock;
+
+        if (newItem.qty > maxStock) {
+            newItem.qty = maxStock;
+            alert("حداکثر موجودی قابل سفارش برای این غذا " + maxStock + " عدد است.");
+        }
+
+        cart.push(newItem);
+    }
+
+    saveCart();
+    renderCart();
 }
+
 
 // ------------------------------------
 // Event Listeners برای کارت‌های محصول
@@ -186,24 +212,34 @@ function addToCart(newItem) {
 
 // 1. افزودن سریع با دکمه '+' روی کارت
 document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-    button.addEventListener('click', (e) => {
-        e.stopPropagation(); 
-        
-        const card = button.closest('.product-card');
-        const id = String(button.dataset.id);
-        const name = card.querySelector('h3').textContent;
-        
-        // ⬅️ ✅ اصلاحیه کلیدی ۲: خواندن قیمت خام از dataset
-        const priceEl = card.querySelector('.price'); 
-        const price = Number(priceEl.dataset.price); // استفاده مستقیم از عدد خام ذخیره شده
+    button.addEventListener('click', (e) => {
+        e.stopPropagation(); 
         
-        const qty = 1;
-        
-      
-        addToCart({ id, name, price, qty });
-       
-    });
+        const card = button.closest('.product-card');
+        const id   = String(button.dataset.id);
+        const name = card.querySelector('h3').textContent;
+
+        const priceEl = card.querySelector('.price'); 
+        const price   = Number(priceEl.dataset.price);
+
+        // موجودی از روی data-stock دکمه یا data-qty روی h4
+        const stock = Number(
+            button.dataset.stock ??
+            card.querySelector('.product-qty')?.dataset.qty ??
+            10
+        );
+
+        const existingItem = cart.find(i => i.id === id);
+        if (existingItem && existingItem.qty >= stock) {
+            alert("موجودی این غذا فقط " + stock + " عدد است.");
+            return;
+        }
+
+        const qty = 1;
+        addToCart({ id, name, price, qty, stock });
+    });
 });
+
 
 
 // 2. باز کردن مودال با کلیک روی کارت
@@ -282,32 +318,54 @@ increaseBtn.addEventListener('click', () => {
     else alert("حداکثر تعداد سفارش برای هر غذا ۱۰ عدد است!");
 });
 
-if(addModalBtn) addModalBtn.addEventListener('click', () => {
-    
-    const id = String(addModalBtn.dataset.id); 
-    const name = modalName.textContent;
-    
-    // ⬅️ ✅ این خط قیمت خام (عدد) را از dataset دکمه می‌خواند و قبلاً درست بود
-    const rawPrice = Number(addModalBtn.dataset.price);
-    const qty = Number(quantityEl.textContent);
-    
-    // بررسی ساده برای اطمینان از صحت قیمت
-    if (isNaN(rawPrice) || rawPrice <= 0) {
-        alert("خطا: قیمت محصول نامعتبر است. لطفاً صفحه را رفرش کنید.");
-        return;
-    }
-    
-    addToCart({ 
-        id: id, 
-        name: name,
-        price: rawPrice, // ارسال قیمت به صورت عدد خالص
-        qty: qty
-    });
-    
-    modal.classList.add('hidden');
-    document.body.style.overflow = 'auto'; 
-    quantityEl.textContent = '1'; 
+if (addModalBtn) addModalBtn.addEventListener('click', () => {
+    
+    const id   = String(addModalBtn.dataset.id); 
+    const name = modalName.textContent;
+    const rawPrice = Number(addModalBtn.dataset.price);
+    const qty  = Number(quantityEl.textContent);
+
+    if (isNaN(rawPrice) || rawPrice <= 0) {
+        alert("خطا: قیمت محصول نامعتبر است. لطفاً صفحه را رفرش کنید.");
+        return;
+    }
+
+    // کارت مربوط به این غذا را در صفحه پیدا می‌کنیم
+    const card = document.querySelector(
+        `.add-to-cart-btn[data-id="${id}"]`
+    )?.closest('.product-card');
+
+    let stock = 10;
+    if (card) {
+        const btn = card.querySelector('.add-to-cart-btn');
+        stock = Number(
+            btn.dataset.stock ??
+            card.querySelector('.product-qty')?.dataset.qty ??
+            10
+        );
+    }
+
+    const existingItem = cart.find(i => i.id === id);
+    const currentQty = existingItem ? existingItem.qty : 0;
+
+    if (currentQty + qty > stock) {
+        alert("موجودی این غذا فقط " + stock + " عدد است.");
+        return;
+    }
+
+    addToCart({ 
+        id,
+        name,
+        price: rawPrice,
+        qty,
+        stock
+    });
+    
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto'; 
+    quantityEl.textContent = '1'; 
 });
+
 
 
 // ------------------------------------
@@ -371,15 +429,18 @@ div.querySelector('.increase').addEventListener('click', (e) => {
         return;
     }
 
-    if (existingItem.qty < 10) {
+    const maxStock = Number(existingItem.stock ?? 10);
+
+    if (existingItem.qty < maxStock) {
         existingItem.qty++;
     } else {
-        alert("حداکثر تعداد سفارش برای هر غذا ۱۰ عدد است!");
+        alert("موجودی این غذا فقط " + maxStock + " عدد است.");
     }
 
     saveCart();
     renderCart();
 });
+
 
     cartItemsContainer.appendChild(div);
   });

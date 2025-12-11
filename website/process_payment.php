@@ -125,6 +125,13 @@ elseif ($payType === 'wallet_order') {
         $stmt->execute();
     }
 
+    // 🔻 کاهش موجودی کالاها
+    foreach ($_SESSION["cart"] as $item) {
+        $stmt = $db->prepare("UPDATE foods SET Quantity = Quantity - ? WHERE food_ID = ?");
+        $stmt->bind_param("ii", $item["qty"], $item["food_id"]);
+        $stmt->execute();
+    }
+
     // پاک‌کردن سشن و سبد دیتابیس
     unset($_SESSION["cart"]);
     unset($_SESSION["order_info"]);
@@ -198,6 +205,14 @@ elseif ($payType === 'order') {
         );
         $stmt->execute();
     }
+
+    // 🔻 کاهش موجودی کالاها
+    foreach ($_SESSION["cart"] as $item) {
+        $stmt = $db->prepare("UPDATE foods SET Quantity = Quantity - ? WHERE food_ID = ?");
+        $stmt->bind_param("ii", $item["qty"], $item["food_id"]);
+        $stmt->execute();
+    }
+
 
     // ۵) خالی کردن سبد
     unset($_SESSION["cart"]);

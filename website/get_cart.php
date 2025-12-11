@@ -30,11 +30,13 @@ $sql = "
         c.food_ID,
         c.Quantity,
         f.food_Name AS name,
-        f.price    AS price
+        f.price    AS price,
+        f.Quantity AS stock
     FROM carts c
     INNER JOIN foods f ON f.food_ID = c.food_ID
     WHERE c.user_ID = ?
 ";
+
 
 $stmt = mysqli_prepare($connect, $sql);
 mysqli_stmt_bind_param($stmt, "i", $userId);
@@ -47,9 +49,11 @@ while ($row = mysqli_fetch_assoc($result)) {
         "id"    => (int)$row['food_ID'],
         "name"  => $row['name'],
         "price" => (int)$row['price'],
-        "qty"   => (int)$row['Quantity']
+        "qty"   => (int)$row['Quantity'],   // تعداد داخل سبد کاربر
+        "stock" => isset($row['stock']) ? (int)$row['stock'] : 0  // موجودی کل غذا در انبار/منو
     ];
 }
+
 
 echo json_encode(['status' => 'ok', 'cart' => $items]);
 exit;

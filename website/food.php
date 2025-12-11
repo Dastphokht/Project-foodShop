@@ -57,7 +57,8 @@ while ($row = mysqli_fetch_array($foods)) {
             <p>' . $row['description'] . '</p>
             <h4 class="product-qty" data-qty="' . $qty . '">تعداد: ' . $qty . '</h4>
             <span class="price" data-price="' . $price . '">' . $price . '</span>
-            <button class="add-to-cart-btn" data-id="' . $row['food_ID'] . '">+</button>
+            <button class="add-to-cart-btn" data-id="' . $row['food_ID'] . '" data-stock="' . $qty . '">+</button>
+
         </div>
     </div>';
 }

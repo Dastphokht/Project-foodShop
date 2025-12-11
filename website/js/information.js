@@ -105,66 +105,107 @@ function validateForm() {
     return isValid;
 }
 
+
+async function checkStockBeforePay() {
+
+    const cart = localStorage.getItem("cartItems");
+    if (!cart) return false;
+
+    const formData = new FormData();
+    formData.append("cart", cart);
+
+    let response = await fetch("check_stock.php", {
+        method: "POST",
+        body: formData
+    });
+
+    let result = await response.json();
+
+    if (result.status === "ok") {
+        return true; // همه موجودی‌ها کافی است
+    }
+
+    if (result.status === "fail") {
+        let msg = "موجودی بعضی غذاها کافی نیست:\n\n";
+        result.items.forEach(it => {
+            msg += `❌ ${it.name} — موجودی: ${it.available} مورد، نیاز: ${it.needed} مورد\n`;
+        });
+        alert(msg);
+        return false;
+    }
+
+    alert("خطا در بررسی موجودی!");
+    return false;
+}
+
+
 // ------------------------------
 // منطق مشترک ثبت سفارش
 // ------------------------------
-function processOrder(method) {
+async function processOrder(method) {
 
-    // 1) اعتبارسنجی
-    if (!validateForm()) return;
+    try {
 
-    const formData = new FormData(form);
-    const cartItems = localStorage.getItem("cartItems");
+        // 1) اعتبارسنجی فرم
+        if (!validateForm()) return;
 
-    if (!cartItems || JSON.parse(cartItems).length === 0) {
-        alert("سبد خرید شما خالی است.");
-        return;
-    }
+        // 2) چک موجودی غذا
+        let stockOk = await checkStockBeforePay();
+        if (!stockOk) return;
 
-    formData.append('cart_data', cartItems);
+        // 3) چک سبد خرید
+        const cartItems = localStorage.getItem("cartItems");
+        if (!cartItems || JSON.parse(cartItems).length === 0) {
+            alert("سبد خرید شما خالی است.");
+            return;
+        }
 
-    fetch('save_info.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(res => {
+        // 4) ذخیره اطلاعات سفارش
+        const formData = new FormData(form);
+        formData.append("cart_data", cartItems);
+
+        let res = await fetch("save_info.php", {
+            method: "POST",
+            body: formData
+        });
 
         if (!res.ok) {
             alert("خطا در ذخیره اطلاعات سفارش!");
             return;
         }
 
-        // 🔵 پرداخت آنلاین → رفتن به درگاه
+        // ------------------------------
+        // 🔵 پرداخت آنلاین
+        // ------------------------------
         if (method === "online") {
             localStorage.setItem("payType", "order");
             window.location.href = "dargah.php";
+            return;
         }
 
-        // 🟢 پرداخت با کیف پول → ارسال مستقیم به process_payment.php
-       // 🟢 پرداخت با کیف پول
-else if (method === "wallet") {
+        // ------------------------------
+        // 🟢 پرداخت از کیف پول
+        // ------------------------------
+        if (method === "wallet") {
 
-    let finalAmount = Number(localStorage.getItem("payableAmount") || 0);
+            let finalAmount = Number(localStorage.getItem("payableAmount") || 0);
 
-    // ۱) از سرور بپرس موجودی کیف پول چقدر است
-    fetch('get_wallet_balance.php')
-        .then(res => res.json())
-        .then(data => {
+            let walletRes = await fetch("get_wallet_balance.php");
+            let walletData = await walletRes.json();
 
-            if (data.status !== 'ok') {
+            if (walletData.status !== "ok") {
                 alert("خطا در بررسی موجودی کیف پول.");
                 return;
             }
 
-            const walletBalance = Number(data.wallet || 0);
+            let walletBalance = Number(walletData.wallet || 0);
 
-            // اگر موجودی کمتر بود → فقط پیام، در همین صفحه بمان
             if (walletBalance < finalAmount) {
-                alert("موجودی کیف پول برای این پرداخت کافی نیست.");
+                alert("❌ موجودی کیف پول کافی نیست.");
                 return;
             }
 
-            // اگر موجودی کافی است → ارسال فرم مخفی به process_payment.php
+            // اگر موجودی کافی بود → ارسال به process_payment.php
             const tempForm = document.createElement("form");
             tempForm.method = "POST";
             tempForm.action = "process_payment.php";
@@ -176,16 +217,10 @@ else if (method === "wallet") {
 
             document.body.appendChild(tempForm);
             tempForm.submit();
-        })
-        .catch(err => {
-            console.error("wallet check error:", err);
-            alert("خطا در بررسی موجودی کیف پول.");
-        });
-}
+        }
 
-    })
-    .catch(err => {
-        console.error("خطا در ارتباط با سرور:", err);
+    } catch (err) {
+        console.error("خطای کلی در پردازش سفارش:", err);
         alert("خطا در برقراری ارتباط با سرور!");
-    });
+    }
 }

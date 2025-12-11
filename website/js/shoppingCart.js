@@ -11,12 +11,14 @@ if (storedCart) {
     try {
         const parsed = JSON.parse(storedCart);
         if (Array.isArray(parsed)) {
-            cart = parsed.map(item => ({
-                id: String(item.id),                           // همیشه رشته
+                cart = parsed.map(item => ({
+                id: String(item.id),
                 name: item.name,
-                price: Number(item.price),                     // عدد
-                qty: Number(item.qty ?? item.quantity ?? 1)    // تعداد
+                price: Number(item.price),
+                qty: Number(item.qty ?? item.quantity ?? 1),
+                stock: item.stock !== undefined ? Number(item.stock) : 10
             }));
+            
         }
     } catch (e) {
         console.error("خطا در خواندن سبد از localStorage:", e);
@@ -64,12 +66,14 @@ async function loadCartFromServer() {
             return;
         }
 
-        const serverCart = data.cart.map(item => ({
+            const serverCart = data.cart.map(item => ({
             id: String(item.id),
             name: item.name,
             price: Number(item.price),
-            qty: Number(item.qty)
+            qty: Number(item.qty),
+            stock: item.stock !== undefined ? Number(item.stock) : 10
         }));
+        
 
         if (cart.length === 0) {
             // فقط دیتابیس داریم
@@ -192,10 +196,19 @@ function renderCart() {
 
         div.querySelector(".increase").addEventListener("click", e => {
             const i = e.target.dataset.index;
-            if (cart[i].qty < 10) cart[i].qty++;
+            const item = cart[i];
+            const maxStock = Number(item.stock ?? 10);
+        
+            if (item.qty < maxStock) {
+                item.qty++;
+            } else {
+                alert("موجودی این غذا فقط " + maxStock + " عدد است.");
+            }
+        
             saveCart();
             renderCart();
         });
+        
 
         div.querySelector(".remove-item").addEventListener("click", e => {
             const i = e.target.dataset.index;
