@@ -66,33 +66,51 @@ async function loadCartFromServer() {
             return;
         }
 
-            const serverCart = data.cart.map(item => ({
+        const serverCart = data.cart.map(item => ({
             id: String(item.id),
             name: item.name,
             price: Number(item.price),
             qty: Number(item.qty),
             stock: item.stock !== undefined ? Number(item.stock) : 10
         }));
-        
 
+        // 🔥 اصلاح سبد بر اساس موجودی واقعی
+        let cleanedCart = [];
+
+        for (let item of serverCart) {
+            if (item.stock <= 0) {
+                // موجودی تمام شده → به سبد اضافه نمی‌کنیم
+                continue;
+            }
+
+            // اگر تعداد خرید قبلی بیشتر از موجودی فعلی است
+            if (item.qty > item.stock) {
+                item.qty = item.stock;
+            }
+
+            cleanedCart.push(item);
+        }
+
+        // از این به بعد به جای serverCart با cleanedCart کار می‌کنیم
         if (cart.length === 0) {
             // فقط دیتابیس داریم
-            cart = serverCart;
+            cart = cleanedCart;
         } else {
-            // اگر local و سرور کاملاً یکسان هستند → هیچ کاری نکن
-            if (areCartsEqual(cart, serverCart)) {
-                // برای اطمینان فقط نرمال‌سازی نوع‌ها
+            // اگر local و سرور کاملاً یکسان هستند → نرمال‌سازی
+            if (areCartsEqual(cart, cleanedCart)) {
                 cart = cart.map(it => ({
                     id: String(it.id),
                     name: it.name,
                     price: Number(it.price),
-                    qty: Number(it.qty)
+                    qty: Number(it.qty),
+                    // اگر خواستی اینجا هم stock را نگه دار:
+                    stock: typeof it.stock !== "undefined" ? Number(it.stock) : 10
                 }));
             } else {
                 // اختلاف دارند → merge (سرور + مهمان)
                 const mergedMap = new Map();
 
-                serverCart.forEach(it => {
+                cleanedCart.forEach(it => {
                     mergedMap.set(it.id, { ...it });
                 });
 
@@ -106,7 +124,8 @@ async function loadCartFromServer() {
                             id,
                             name: it.name,
                             price: Number(it.price),
-                            qty: Number(it.qty)
+                            qty: Number(it.qty),
+                            stock: typeof it.stock !== "undefined" ? Number(it.stock) : 10
                         });
                     }
                 });
@@ -124,8 +143,6 @@ async function loadCartFromServer() {
         console.log("خطا در دریافت/ادغام سبد خرید:", err);
     }
 }
-
-
 
 
 // ذخیره در localStorage + دیتابیس
@@ -171,6 +188,24 @@ function renderCart() {
     }
 
     cart.forEach((item, index) => {
+
+        const maxStock = Number(item.stock ?? 10);
+
+        // ⛔ اگر موجودی صفر شد، آیتم را از سبد حذف کن
+        if (maxStock <= 0) {
+            cart.splice(index, 1);
+            saveCart();
+            renderCart();   // دوباره رندر، چون آرایه عوض شد
+            return;
+        }
+
+        // ✂️ اگر تعداد در سبد بیشتر از موجودی است → اصلاحش کن
+        if (item.qty > maxStock) {
+            item.qty = maxStock;
+            saveCart();
+        }
+
+        // حالا با تعداد صحیح محاسبه کن
         total += item.price * item.qty;
 
         const div = document.createElement("div");
@@ -186,6 +221,7 @@ function renderCart() {
             <button class="remove-item" data-index="${index}">حذف</button>
         `;
 
+        // ↓ بقیه کد مثل قبل
         div.querySelector(".decrease").addEventListener("click", e => {
             const i = e.target.dataset.index;
             if (cart[i].qty > 1) cart[i].qty--;
@@ -208,7 +244,6 @@ function renderCart() {
             saveCart();
             renderCart();
         });
-        
 
         div.querySelector(".remove-item").addEventListener("click", e => {
             const i = e.target.dataset.index;
@@ -223,8 +258,6 @@ function renderCart() {
     saveFinalAmount(total);
     totalEl.textContent = formatPrice(total);
 }
-
-
 
 // ----------------------------
 //     DOMContentLoaded

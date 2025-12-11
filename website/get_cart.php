@@ -5,6 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 header('Content-Type: application/json; charset=utf-8');
 
+// اگر لاگین نیست → سبد خالی
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['status' => 'guest', 'cart' => []]);
     exit;
@@ -19,24 +20,23 @@ if (!$connect) {
 }
 
 /*
-   جدول carts فرضاً:
+   carts:
    cart_ID | user_ID | food_ID | Quantity | added_at
-   جدول foods فرضاً:
-   food_ID | foodname | price | ...
+   foods:
+   food_ID | food_Name | price | Quantity | ...
 */
 
 $sql = "
     SELECT 
         c.food_ID,
-        c.Quantity,
-        f.food_Name AS name,
-        f.price    AS price,
-        f.Quantity AS stock
+        c.Quantity      AS cart_qty,
+        f.food_Name     AS name,
+        f.price         AS price,
+        f.Quantity      AS stock
     FROM carts c
     INNER JOIN foods f ON f.food_ID = c.food_ID
     WHERE c.user_ID = ?
 ";
-
 
 $stmt = mysqli_prepare($connect, $sql);
 mysqli_stmt_bind_param($stmt, "i", $userId);
@@ -45,15 +45,33 @@ $result = mysqli_stmt_get_result($stmt);
 
 $items = [];
 while ($row = mysqli_fetch_assoc($result)) {
+
+    $stock   = (int)$row['stock'];      // موجودی واقعی الان
+    $cartQty = (int)$row['cart_qty'];   // تعداد ذخیره شده در carts
+
+    // اگر موجودی تموم شده → اصلاً این آیتم رو به سبد برنگردون
+    if ($stock <= 0) {
+        continue;
+    }
+
+    // اگر تعداد سبد بیشتر از موجودی فعلی است → محدودش کن به موجودی
+    if ($cartQty > $stock) {
+        $cartQty = $stock;
+    }
+
+    // اگر بعد از اصلاح، تعداد ۰ شد → چیزی برنگردون
+    if ($cartQty <= 0) {
+        continue;
+    }
+
     $items[] = [
         "id"    => (int)$row['food_ID'],
         "name"  => $row['name'],
         "price" => (int)$row['price'],
-        "qty"   => (int)$row['Quantity'],   // تعداد داخل سبد کاربر
-        "stock" => isset($row['stock']) ? (int)$row['stock'] : 0  // موجودی کل غذا در انبار/منو
+        "qty"   => $cartQty,
+        "stock" => $stock      // اختیاری، اگر JS خواست استفاده کند
     ];
 }
-
 
 echo json_encode(['status' => 'ok', 'cart' => $items]);
 exit;
