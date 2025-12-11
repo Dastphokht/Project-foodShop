@@ -235,20 +235,56 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     // ------------------------------
     // تخفیف
-    // ------------------------------
+
+    let discountApplied = false;
+
     applyBtn.addEventListener("click", () => {
+    
+        const oldPriceEl = document.querySelector(".old-price");
+        const newPriceEl = document.querySelector(".new-price");
+        const msgEl = document.querySelector(".discount-msg");
+    
         let total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
         let code = discountInput.value.trim().toUpperCase();
-        const totalEl = document.querySelector(".jamkol_txt strong");
 
-        if (code === "SAVE10") {
-            total *= 0.9;
+        if (discountApplied) {
+            discountApplied = false;
+    
+            oldPriceEl.style.display = "none";
+            newPriceEl.textContent = formatPrice(total);
+            msgEl.style.display = "none";
+            applyBtn.textContent = "اعمال تخفیف";
+            discountInput.disabled = false;
+            discountInput.value = "";
+            saveFinalAmount(total);
+            return;
         }
-
-        totalEl.textContent = formatPrice(total);
-        saveFinalAmount(total);
+    
+        
+        if (code === "SAVE10") {
+            let discountedTotal = total * 0.9;
+    
+            oldPriceEl.textContent = formatPrice(total);
+            oldPriceEl.style.display = "inline";
+    
+            newPriceEl.textContent = formatPrice(discountedTotal);
+    
+            msgEl.textContent = "کد تخفیف اعمال شد";
+            msgEl.style.display = "block";
+    
+           
+            applyBtn.textContent = "حذف کد تخفیف";
+            discountInput.disabled = true;
+            discountApplied = true;
+    
+            saveFinalAmount(discountedTotal);
+        } else {
+            msgEl.textContent = "کد تخفیف معتبر نیست";
+            msgEl.style.display = "block";
+            msgEl.style.color = "red";
+        }
     });
-
+    
     // ------------------------------
     // پرداخت
     // ------------------------------

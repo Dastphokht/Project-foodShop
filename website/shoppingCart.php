@@ -24,12 +24,19 @@ $userLoggedIn = isset($_SESSION["user_id"]);
         <div class="cart-summary">
             <h3 class="shop-box-text">خلاصه سفارش</h3>
             <div class="jamkol_txt">
-                <p>جمع کل: <strong>0 تومان</strong></p>
+              <p>
+                 جمع کل:
+              <span class="old-price" style="text-decoration: line-through; color: #888; display:none;"></span>
+              <strong class="new-price">0 تومان</strong>
+              </p>
             </div>
+
             <div class="discount-box">
-                <input type="text" placeholder="کد تخفیف" class="discount-input" />
-                <button class="apply-discount">اعمال تخفیف</button>
+             <input type="text" placeholder="کد تخفیف" class="discount-input" />
+             <button class="apply-discount">اعمال تخفیف</button>
+             <p class="discount-msg" style="color: green; font-size: 14px; display:none;"></p>
             </div>
+
             <?php if (isset($_SESSION['user_id'])): ?>
     <!-- کاربر لاگین است: مستقیم برود به مرحله اطلاعات/پرداخت -->
     <a href="information.php">
