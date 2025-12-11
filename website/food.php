@@ -44,6 +44,8 @@ $foods = show_food($index);
 while ($row = mysqli_fetch_array($foods)) {
     // قیمت خام را به عنوان عدد صحیح می‌گیریم
     $price = intval($row['price']); 
+    //موجودی
+    $qty   = isset($row['Quantity']) ? (int)$row['Quantity'] : 0;
     
     echo '
     <div class="product-card" data-category="irani">
@@ -53,7 +55,7 @@ while ($row = mysqli_fetch_array($foods)) {
         <div class="product-info">
             <h3>' . $row['food_Name'] . '</h3>
             <p>' . $row['description'] . '</p>
-            <h4 class="product-qty" data-qty="1">تعداد: ۱</h4>
+            <h4 class="product-qty" data-qty="' . $qty . '">تعداد: ' . $qty . '</h4>
             <span class="price" data-price="' . $price . '">' . $price . '</span>
             <button class="add-to-cart-btn" data-id="' . $row['food_ID'] . '">+</button>
         </div>
