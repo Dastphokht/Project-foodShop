@@ -251,15 +251,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let discountApplied = false;
 
-    applyBtn.addEventListener("click", () => {
-    
+    applyBtn.addEventListener("click", async () => {
+
         const oldPriceEl = document.querySelector(".old-price");
         const newPriceEl = document.querySelector(".new-price");
         const msgEl = document.querySelector(".discount-msg");
     
         let total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
         let code = discountInput.value.trim().toUpperCase();
-
+    
+        if (!code) {
+            msgEl.style.display = "block";
+            msgEl.style.color = "red";
+            msgEl.textContent = "لطفاً کد تخفیف را وارد کنید.";
+            return;
+        }
+    
+        // اگر قبلاً تخفیف فعال بوده → بازنشانی
         if (discountApplied) {
             discountApplied = false;
     
@@ -273,30 +281,53 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
     
-        
-        if (code === "SAVE10") {
-            let discountedTotal = total * 0.9;
+        // 🔥 ارسال کد به PHP
+        const formData = new FormData();
+        formData.append("code", code);
     
-            oldPriceEl.textContent = formatPrice(total);
-            oldPriceEl.style.display = "inline";
+        let response = await fetch("check_discount.php", {
+            method: "POST",
+            body: formData
+        });
     
-            newPriceEl.textContent = formatPrice(discountedTotal);
+        let result = await response.json();
     
-            msgEl.textContent = "کد تخفیف اعمال شد";
-            msgEl.style.display = "block";
-    
-           
-            applyBtn.textContent = "حذف کد تخفیف";
-            discountInput.disabled = true;
-            discountApplied = true;
-    
-            saveFinalAmount(discountedTotal);
-        } else {
-            msgEl.textContent = "کد تخفیف معتبر نیست";
+        // ❌ کد پیدا نشد
+        if (result.status === "not_found") {
             msgEl.style.display = "block";
             msgEl.style.color = "red";
+            msgEl.textContent = "کد تخفیف معتبر نیست.";
+            return;
         }
+    
+        // ❌ خطای سرور یا ورودی
+        if (result.status !== "ok") {
+            msgEl.style.display = "block";
+            msgEl.style.color = "red";
+            msgEl.textContent = "خطا در بررسی کد تخفیف.";
+            return;
+        }
+    
+        // 🟢 کد معتبر است
+        const percent = Number(result.percent);
+        const discountedTotal = total * ((100 - percent) / 100);
+    
+        oldPriceEl.textContent = formatPrice(total);
+        oldPriceEl.style.display = "inline";
+    
+        newPriceEl.textContent = formatPrice(discountedTotal);
+    
+        msgEl.style.display = "block";
+        msgEl.style.color = "green";
+        msgEl.textContent = `کد تخفیف ${percent}% اعمال شد`;
+    
+        applyBtn.textContent = "حذف کد تخفیف";
+        discountInput.disabled = true;
+        discountApplied = true;
+    
+        saveFinalAmount(discountedTotal);
     });
+    
     
     // ------------------------------
     // پرداخت
