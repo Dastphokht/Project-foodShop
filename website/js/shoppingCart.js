@@ -268,4 +268,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         localStorage.setItem("payableAmount", clean);
     });
 
+    const walletPayBtn = document.getElementById("wallet-pay-btn");
+
+if (walletPayBtn) {
+    walletPayBtn.addEventListener("click", () => {
+
+        if (cart.length === 0) {
+            alert("سبد خرید خالی است.");
+            return;
+        }
+
+        // محاسبه مبلغ نهایی (با تخفیف احتمالی)
+        const totalEl = document.querySelector(".jamkol_txt strong");
+        let finalAmount = totalEl.textContent.replace(/[^0-9\u06F0-\u06F9]/g, '');
+
+        // تبدیل فارسی → انگلیسی
+        finalAmount = finalAmount.replace(/[\u06F0-\u06F9]/g, d => d.charCodeAt(0) - 1776);
+
+        // ذخیره برای dargah.php
+        localStorage.setItem("payType", "wallet_order");  // 🔥 نوع جدید پرداخت
+        localStorage.setItem("payableAmount", finalAmount);
+
+        // رفتن مستقیم برای ثبت اطلاعات سفارش (address)
+        window.location.href = "information.php?wallet=1";
+    });
+}
+
+
 });

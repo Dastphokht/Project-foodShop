@@ -7,6 +7,9 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
+$isWalletPayment = isset($_GET["wallet"]) && $_GET["wallet"] == "1";
+
+
 // اگر کاربر لاگین کرده بود، ادامه کد اجرا می‌شود
 ?>
 
@@ -59,7 +62,11 @@ if (!isset($_SESSION["user_id"])) {
                 </div>
                 <div class="buttons">
                     <button type="button" id="cancel">انصراف</button>
-                    <button type="submit" id="pay">پرداخت</button>
+                    <!-- دکمه پرداخت آنلاین -->
+                    <button type="button" id="pay-online">پرداخت آنلاین</button>
+
+                    <!-- دکمه پرداخت با کیف پول -->
+                    <button type="button" id="pay-wallet">پرداخت از کیف پول</button>
                 </div>
             </form>
         </div>

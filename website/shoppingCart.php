@@ -33,7 +33,7 @@ $userLoggedIn = isset($_SESSION["user_id"]);
             <?php if (isset($_SESSION['user_id'])): ?>
     <!-- کاربر لاگین است: مستقیم برود به مرحله اطلاعات/پرداخت -->
     <a href="information.php">
-        <button class="pay-btn">پرداخت</button>
+        <button class="pay-btn">ادامه و ثبت اطلاعات</button>
     </a>
     <?php else: ?>
         <!-- کاربر لاگین نیست: اول وارد شود، بعد برگردد به همین سبد خرید -->
