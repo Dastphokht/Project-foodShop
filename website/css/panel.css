@@ -1067,3 +1067,74 @@ main.user{
     color: #1ea65a;
     font-weight: 600;
   }
+  /* مدیریت هزینه ها */
+  .dc-main {
+    direction: rtl;
+    font-family: "Vazir", sans-serif;
+    padding: 20px;
+}
+
+.dc-container {
+    max-width: 500px;
+    background: white;
+    margin: auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-top: 6px solid #ff7a00;
+}
+
+.dc-title {
+    margin-top: 0;
+    color: #ff7a00;
+    display: flex;
+    justify-content: center;
+}
+
+.dc-label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+}
+
+.dc-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.dc-btn {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+    background: #1cc25a;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.dc-btn:hover {
+    background: #149a47;
+}
+
+.dc-section-title {
+    border-bottom: 2px solid #ff7a00;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.dc-success {
+    background: #e3ffe9;
+    padding: 10px;
+    border-right: 4px solid #1cc25a;
+    margin-top: 10px;
+    border-radius: 8px;
+    display: none;
+}

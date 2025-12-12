@@ -61,6 +61,7 @@ if (isset($_GET['Avalible']))
                             class="fa-brands fa-shopify"></i></a></li>
                 <li data-name="user" class="li-menu-dashboard"><a href="#">مدیریت کاربران<i
                             class="fa-solid fa-user"></i></a></li>
+                <li class="li-menu-dashboard" data-name="cost"><a href="#">مدیریت هزینه ها<i class="fa-solid fa-sack-dollar"></i></a></li>
                 <li class="li-menu-dashboard"><a href="../index.html">ورود به سایت<i class="fa-solid fa-globe"></i></a></li>
             <!-- ++++++++++ logout   -->
                 <li class="li-menu-dashboard"><a href="../Admin/LogOut.php">خروج <i class="fa-solid fa-arrow-right-from-bracket"></i></a></li>
@@ -236,7 +237,40 @@ if (isset($_GET['Avalible']))
                 <?php include "users.php"; ?>
         </main>
 
+        <main class="" data-id="cost">
+        <div class="dc-main">
+    <div class="dc-container">
+        <h2 class="dc-title">مدیریت کد تخفیف</h2>
 
+        <div class="dc-section-title">افزودن کد تخفیف جدید</div>
+
+        <label class="dc-label">کد تخفیف:</label>
+        <input type="text" id="dc-code" class="dc-input" placeholder="مثال: OFF50">
+
+        <label class="dc-label">درصد تخفیف:</label>
+        <input type="number" id="dc-percent" class="dc-input" placeholder="مثال: 20">
+
+        <label class="dc-label">وضعیت:</label>
+        <select id="dc-is-active" class="dc-input">
+            <option value="1">فعال</option>
+            <option value="0">غیرفعال</option>
+        </select>
+
+        <button class="dc-btn" onclick="dc_saveDiscountCode()">ذخیره کد تخفیف</button>
+        <div id="dc-msg1" class="dc-success">کد تخفیف با موفقیت ذخیره شد.</div>
+
+        <br><br>
+
+        <div class="dc-section-title">تنظیم هزینه ارسال</div>
+
+        <label class="dc-label">هزینه ارسال (تومان):</label>
+        <input type="number" id="dc-shipping" class="dc-input" placeholder="مثال: 30000">
+
+        <button class="dc-btn" onclick="dc_saveShipping()">ذخیره هزینه ارسال</button>
+        <div id="dc-msg2" class="dc-success">هزینه ارسال ذخیره شد.</div>
+    </div>
+</div>
+        </main>
 
     </section>
     <script src="../js/AddFood.js"></script>
@@ -405,6 +439,43 @@ function changeStatus(select, event) {
     if (select.value === "delivering") summary.classList.add("status-delivering");
 }
 
+
+// مدیریت هزینه ها
+function dc_saveDiscountCode() {
+        const code = document.getElementById("dc-code").value;
+        const percent = document.getElementById("dc-percent").value;
+        const is_active = document.getElementById("dc-is-active").value;
+
+        if (!code || !percent) {
+            alert("تمام فیلدها باید پر شوند.");
+            return;
+        }
+
+        const data = {
+            code,
+            percent_off: percent,
+            is_active
+        };
+
+        localStorage.setItem("discount_code", JSON.stringify(data));
+
+        document.getElementById("dc-msg1").style.display = "block";
+        setTimeout(() => document.getElementById("dc-msg1").style.display = "none", 2500);
+    }
+
+    function dc_saveShipping() {
+        const cost = document.getElementById("dc-shipping").value;
+
+        if (!cost) {
+            alert("لطفاً هزینه ارسال را وارد کنید.");
+            return;
+        }
+
+        localStorage.setItem("shipping_cost", cost);
+
+        document.getElementById("dc-msg2").style.display = "block";
+        setTimeout(() => document.getElementById("dc-msg2").style.display = "none", 2500);
+    }
 
         </script>
         <script src="../js/order.js"></script>
