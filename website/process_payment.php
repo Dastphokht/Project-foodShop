@@ -121,7 +121,7 @@ if (isset($_SESSION["order_info"]["shipping_cost"])) {
 
     $stmt = $db->prepare("
         INSERT INTO orders (user_ID, total_Price, status, created_At)
-        VALUES (?, ?, 'confirmed', NOW())
+        VALUES (?, ?, 'registered', NOW())
     ");
     $stmt->bind_param("id", $user_id, $final_total);
     $stmt->execute();
@@ -206,7 +206,7 @@ if (isset($_SESSION["order_info"]["shipping_cost"])) {
     // ۳) ثبت سفارش
     $stmt = $db->prepare("
         INSERT INTO orders (user_ID, total_Price, status, created_At)
-        VALUES (?, ?, 'confirmed', NOW())
+        VALUES (?, ?, 'registered', NOW())
     ");
     $stmt->bind_param("id", $user_id, $final_total);
     $stmt->execute();

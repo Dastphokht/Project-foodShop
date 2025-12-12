@@ -41,7 +41,8 @@ h2 {
 /* رنگ‌های وضعیت */
 .registered { background: #4CAF50; }       /* ثبت سفارش */
 .preparing  { background: #FF9800; }       /* در حال آماده‌سازی */
-.sending    { background: #03A9F4; }       /* در حال ارسال */
+.Sending    { background: #03A9F4; }       /* در حال ارسال */
+.delivered    { background: #894592; }       /* در حال ارسال */
 .canceled   { background: #F44336; }       /* لغو سفارش */
 
 .items {

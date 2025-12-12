@@ -45,15 +45,23 @@ $orderResult = mysqli_query($conn, $orderQuery);
 
             <?php
                 $statusClass = "registered";
-                $statusTitle = "درحال ثبت سفارش";
+                $statusTitle = "در انتظار ثبت سفارش";
 
-                if ($order['status'] === "preparing") {
+                if ($order['status'] === "registered") {
                     $statusClass = "registered";
+                    $statusTitle = "در انتظار ثبت سفارش";
+                }
+                if ($order['status'] === "preparing") {
+                    $statusClass = "preparing";
                     $statusTitle = "در حال آماده‌سازی";
                 }
-                if ($order['status'] === "delivering") {
-                    $statusClass = "preparing";
+                if ($order['status'] === "Sending") {
+                    $statusClass = "Sending";
                     $statusTitle = " در حال ارسال";
+                }
+                if ($order['status'] === "delivered") {
+                    $statusClass = "delivered";
+                    $statusTitle = " تحویل داده شده";
                 }
                 if ($order['status'] === "canceled") {
                     $statusClass = "canceled";
@@ -117,14 +125,14 @@ function checkStatusUpdates() {
 
                 // گرفتن وضعیت فعلی
                 let currentText = statusElement.textContent.trim();
-
                 // مقایسه وضعیت‌های جدید با متن قبلی
                 let newText = "";
 
                 switch (newStatus) {
                     case "registered": newText = "در انتظار ثبت سفارش"; break;
                     case "preparing": newText = "در حال آماده‌سازی"; break;
-                    case "delivering": newText = "در حال ارسال"; break;
+                    case "Sending": newText = "در حال ارسال"; break;
+                    case "delivered": newText = "تحویل داده شده"; break;
                     case "canceled": newText = "لغو شده"; break;
                 }
 
@@ -135,11 +143,12 @@ function checkStatusUpdates() {
                     statusElement.textContent = newText;
 
                     // تغییر کلاس‌های رنگی
-                    statusElement.classList.remove("registered", "preparing","delivering", "canceled");
+                    statusElement.classList.remove("registered", "preparing","Sending","delivered", "canceled");
 
                     if (newStatus === "registered") statusElement.classList.add("registered");
                     if (newStatus === "preparing") statusElement.classList.add("preparing");
-                    if (newStatus === "delivering") statusElement.classList.add("delivering");
+                    if (newStatus === "Sending") statusElement.classList.add("Sending");
+                    if (newStatus === "delivered") statusElement.classList.add("delivered");
                     if (newStatus === "canceled") statusElement.classList.add("canceled");
 
                     // انیمیشن برای توجه بیشتر

@@ -39,7 +39,7 @@ while ($row = mysqli_fetch_assoc($result)):
             
             <option value="registered"  <?= $row['status']=='registered'?'selected':'' ?>>ثبت سفارش</option>
             <option value="preparing"   <?= $row['status']=='preparing'?'selected':'' ?>>در حال آماده‌سازی</option>
-            <option value="delivering"  <?= $row['status']=='delivering'?'selected':'' ?>>در حال ارسال</option>
+            <option value="Sending"     <?= $row['status']=='Sending'?'selected':'' ?>>در حال ارسال</option>
             <option value="delivered"   <?= $row['status']=='delivered'?'selected':'' ?>>تحویل داده شده</option>
             <option value="canceled"    <?= $row['status']=='canceled'?'selected':'' ?>>لغو سفارش</option>
         </select>
