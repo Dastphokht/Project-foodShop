@@ -61,6 +61,8 @@ function formatFarsi($num) {
 
 <body>
 
+<?php include('Menu.php') ?>
+
 <div class="container">
 
     <header class="header">
