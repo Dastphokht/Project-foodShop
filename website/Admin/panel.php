@@ -211,16 +211,29 @@ if (isset($_GET['Avalible']))
                     
                         <div class="admin-qty-box">
                             <label for="qty-input">تعداد :</label>
-                            <input type="number" id="qty-input" name="qty" placeholder="مثلاً 200">
+                            <input type="number" id="qty-input" name="food_info[qty]" placeholder="مثلاً 200" value="<?= $food ? $food['Quantity'] : '' ?>">
                         </div>
 
 
                          </div>
+                         
                         <h3 class="label_food">تصویر غذا:</h3>
-                        <input type="file"  name="food_image" class="input_food" id="image" accept="image/*">
+                        <input type="file"  name="food_image" class="input_food" id="image" accept="image/*" value="<?= $food ? $food['img_url'] : '' ?>">
                         <span class="error-message" id="imageError"></span>
                         <div style="margin-top:5px;">
-                            <img id="imagePreview" src="../asset/img/FoodsImage<? ? $food['img_url'] : ''  ?>" alt="پیش‌نمایش تصویر" style="max-width:150px; display:none; border:1px solid #ccc; padding:3px;">
+                            <?php 
+                            // تعیین آدرس تصویر
+                            $imageSrc = '';
+                            if ($food && !empty($food['img_url'])) {
+                                $imagePath = "../asset/img/FoodsImage/" . $food['img_url'];
+                                $imageSrc = file_exists($imagePath) ? $imagePath : '';
+                            }
+                            ?>
+                            
+                            <img id="imagePreview" 
+                                src="<?= $imageSrc ?>" 
+                                alt="پیش‌نمایش تصویر" 
+                                style="max-width:150px; <?= $imageSrc ? 'display:block;' : 'display:none;' ?> border:1px solid #ccc; padding:3px;">
                         </div>
                 
                         <input type="submit" class="btn_submit_food" value="ثبت غذا"></input>

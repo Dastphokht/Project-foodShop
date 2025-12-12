@@ -35,10 +35,11 @@ function AddFood($food_info, $image_name) {
     $desc = mysqli_real_escape_string($conn, $food_info['description']);
     $price = mysqli_real_escape_string($conn, $food_info['price']);
     $type = mysqli_real_escape_string($conn, $food_info['type']);
+    $qty = mysqli_real_escape_string($conn, $food_info['qty']);
     $img = $image_name ? mysqli_real_escape_string($conn, $image_name) : '';
 
-    $sql = "INSERT INTO foods (food_Name, description, price, img_url, type)
-            VALUES ('$name', '$desc', '$price', '$img', '$type')";
+    $sql = "INSERT INTO foods (food_Name, description, price, img_url, type,Quantity)
+            VALUES ('$name', '$desc', '$price', '$img', '$type','$qty')";
 
     $res = mysqli_query($conn, $sql);
     mysqli_close($conn);
@@ -54,6 +55,7 @@ function UpdateFood($id, $food_info, $image_name) {
     $desc = mysqli_real_escape_string($conn, $food_info['description']);
     $price = mysqli_real_escape_string($conn, $food_info['price']);
     $type = mysqli_real_escape_string($conn, $food_info['type']);
+    $qty = mysqli_real_escape_string($conn, $food_info['qty']);
 
     $set_img = "";
     if ($image_name) {
@@ -65,7 +67,8 @@ function UpdateFood($id, $food_info, $image_name) {
                 food_Name='$name',
                 description='$desc',
                 price='$price',
-                type='$type'
+                type='$type',
+                Quantity=$qty
             $set_img
             WHERE food_ID='$id'";
 

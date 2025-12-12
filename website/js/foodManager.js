@@ -76,10 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             <h4> قیمت: </h4>
                             <h5>${numberWithCommas(food.price)} تومان</h5>
                         </div>
-                        ${food.count ? `
+                        ${food.Quantity ? `
                         <div class="count_prodcut_box">
                             <h4> تعداد: </h4>
-                            <h5>${escapeHtml(food.count)}</h5>
+                            <h5>${escapeHtml(food.Quantity)}</h5>
                         </div>` : ''}
                     </div>
                 </div>
