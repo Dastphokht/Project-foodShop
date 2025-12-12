@@ -287,6 +287,8 @@ if (isset($_GET['Avalible']))
 
     </section>
     <script src="../js/AddFood.js"></script>
+    <script src="../js/chart.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.0/dist/Chart.min.js"></script>
    <!-- <script src="js/main.js"></script> -->
    <script>
@@ -318,34 +320,35 @@ if (isset($_GET['Avalible']))
         });
     });
     
-            var ctx = document.getElementById("myChart").getContext("2d");
-            var myChart = new Chart(ctx, {
-                type: 'polarArea',
-                data: {
-                    labels: ["غذای ایرانی", "فست فود", "کباب ", "سوخاری", "نوشیدنی "],
-                    datasets: [
-                        {
-                            label: "",
-                            data: [15, 2, 13, 5, 10],
-                            backgroundColor: [
-                                "rgba(255, 99, 132, 1)",
-                                "rgba(54, 162, 235, 1)",
-                                "rgba(255, 206, 86, 1)",
-                                "rgba(75, 192, 192, 1)",
-                                "rgba(153, 102, 255, 1)",
-                            ],
+            // var ctx = document.getElementById("myChart").getContext("2d");
+            // var myChart = new Chart(ctx, {
+            //     type: 'polarArea',
+            //     data: {
+            //         labels: ["غذای ایرانی", "فست فود", "کباب ", "سوخاری", "نوشیدنی "],
+            //         datasets: [
+            //             {
+            //                 label: "",
+            //                 data: [15, 2, 13, 5, 10],
+            //                 backgroundColor: [
+            //                     "rgba(255, 99, 132, 1)",
+            //                     "rgba(54, 162, 235, 1)",
+            //                     "rgba(255, 206, 86, 1)",
+            //                     "rgba(75, 192, 192, 1)",
+            //                     "rgba(153, 102, 255, 1)",
+            //                 ],
     
-                            borderWidth: 1
-                        }
-                    ]
-                },
-                options: {
-                    scales: {
+            //                 borderWidth: 1
+            //             }
+            //         ]
+            //     },
+            //     options: {
+            //         scales: {
     
-                    }
-                }
-            });
+            //         }
+            //     }
+            // });
     
+
     
             function toggleMenu() {
                 const togglemenu = document.querySelector('.menu-profile-dashboard');
