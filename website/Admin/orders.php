@@ -26,20 +26,30 @@ while ($row = mysqli_fetch_assoc($result)):
 <div class="order-card">
 
     <div class="order-summary">
-        <div>#<?= $row['order_ID'] ?></div>
+        <div><?= $row['order_ID'] ?></div>
         <div><?= $row['user_Name'] ?></div>
         <div><?= $row['created_At'] ?></div>
         <div><?= number_format($row['total_Price']) ?></div>
 
         <div class="status-wrapper">
-            <select class="status-select"
-                    onchange="changeStatus(<?= $row['order_ID'] ?>, this.value)">
-                
-                <option value="registered"  <?= $row['status']=='registered'?'selected':'' ?>>ثبت سفارش</option>
-                <option value="preparing"   <?= $row['status']=='preparing'?'selected':'' ?>>در حال آماده‌سازی</option>
-                <option value="delivering"  <?= $row['status']=='delivering'?'selected':'' ?>>در حال ارسال</option>
-                <option value="canceled"  <?= $row['status']=='delivering'?'selected':'' ?>>لغو سفارش</option>
-            </select>
+        
+             <?php if ($row['status'] != 'canceled'): ?>
+        <select class="status-select"
+                onchange="changeStatus(<?= $row['order_ID'] ?>, this.value)">
+            
+            <option value="registered"  <?= $row['status']=='registered'?'selected':'' ?>>ثبت سفارش</option>
+            <option value="preparing"   <?= $row['status']=='preparing'?'selected':'' ?>>در حال آماده‌سازی</option>
+            <option value="delivering"  <?= $row['status']=='delivering'?'selected':'' ?>>در حال ارسال</option>
+            <option value="delivered"   <?= $row['status']=='delivered'?'selected':'' ?>>تحویل داده شده</option>
+            <option value="canceled"    <?= $row['status']=='canceled'?'selected':'' ?>>لغو سفارش</option>
+        </select>
+    <?php else: ?>
+        <div class="canceled-status" style="color: #dc3545; font-weight: bold;">
+            لغو شده (غیرقابل تغییر)
+        </div>
+    <?php endif; ?>
+        
+        
         </div>
 
         <div class="arrow" onclick="toggleOrder(this)">▾</div>
