@@ -86,22 +86,22 @@
                         <form id="contactForm" class="form">
                             <div class="form-group">
                                 <label for="name">نام و نام خانوادگی</label>
-                                <input type="text" id="cf-name" name="name" required placeholder="نام خود را وارد کنید">
+                                <input type="text" id="name" name="name" required placeholder="نام خود را وارد کنید">
                             </div>
 
                             <div class="form-group">
                                 <label for="email">ایمیل</label>
-                                <input type="email" id="cf-email" name="email" required placeholder="ایمیل خود را وارد کنید">
+                                <input type="email" id="email" name="email" required placeholder="ایمیل خود را وارد کنید">
                             </div>
 
                             <div class="form-group">
                                 <label for="phone">شماره تلفن</label>
-                                <input type="tel" id="cf-phone" name="phone" required placeholder="شماره تلفن خود را وارد کنید">
+                                <input type="tel" id="phone" name="phone" required placeholder="شماره تلفن خود را وارد کنید">
                             </div>
 
                             <div class="form-group">
                                 <label for="subject">موضوع</label>
-                                <select id="cf-subject" name="subject" required>
+                                <select id="subject" name="subject" required>
                                     <option value="">موضوع را انتخاب کنید</option>
                                     <option value="order">سفارش</option>
                                     <option value="complaint">شکایت</option>
@@ -112,7 +112,7 @@
 
                             <div class="form-group">
                                 <label for="message">پیام</label>
-                                <textarea id="cf-messag" name="message" rows="6" required placeholder="پیام خود را وارد کنید..."></textarea>
+                                <textarea id="message" name="message" rows="6" required placeholder="پیام خود را وارد کنید..."></textarea>
                             </div>
 
                             <button type="submit" class="btn-submit">ارسال پیام 📧</button>
@@ -152,33 +152,39 @@
     </section>
 
     <script>
-       document.getElementById('contactForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const messageData = {
-        id: Date.now(),
-        name: document.getElementById('cf-name').value.trim(),
-        email: document.getElementById('cf-email').value.trim(),
-        phone: document.getElementById('cf-phone').value.trim(),
-        subject: document.getElementById('cf-subject').value,
-        message: document.getElementById('cf-message').value.trim(),
-        date: new Date().toLocaleString('fa-IR')
-    };
-
-    if (!messageData.name || !messageData.email || !messageData.message) {
-        alert('لطفاً فیلدهای ضروری را پر کنید.');
-        return;
-    }
-    const messages = JSON.parse(localStorage.getItem('dc_messages')) || [];
-    messages.push(messageData);
-    localStorage.setItem('dc_messages', JSON.stringify(messages));
-    document.getElementById('successMessage').style.display = 'block';
-    this.reset();
-    setTimeout(() => {
-        document.getElementById('successMessage').style.display = 'none';
-    }, 3000);
-});
-
-    </script>
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+        
+            const form = this;
+            const successBox = document.getElementById('successMessage');
+        
+            const formData = new FormData(form);
+        
+            try {
+                const res = await fetch("save_contact.php", {
+                    method: "POST",
+                    body: formData
+                });
+        
+                const data = await res.json();
+        
+                if (data.status === "ok") {
+                    successBox.style.display = 'block';
+                    form.reset();
+        
+                    setTimeout(() => {
+                        successBox.style.display = 'none';
+                    }, 3000);
+                } else {
+                    alert(data.message || "خطا در ارسال پیام");
+                }
+        
+            } catch (err) {
+                console.error(err);
+                alert("خطا در ارتباط با سرور");
+            }
+        });
+        </script>
+        
 </body>
 </html>
