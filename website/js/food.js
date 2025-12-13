@@ -256,6 +256,10 @@ productCards.forEach(card => {
         modalName.textContent = name;
         modalDesc.textContent = desc;
         modalPrice.textContent = card.querySelector('.price').textContent;
+        
+        const qtyText = card.querySelector(".product-qty").textContent; // مثلا: "تعداد: 4"
+        modal.querySelector(".modal-qty").textContent = qtyText;
+
 
         // ⬅️ ذخیره ID و قیمت خام در دکمه Add to Cart مودال
         if(addModalBtn){
