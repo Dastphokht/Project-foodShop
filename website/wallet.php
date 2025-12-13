@@ -87,10 +87,10 @@ function formatFarsi($num) {
         <input type="text" id="amountInput" placeholder="مبلغ را وارد کنید">
 
         <div class="quick-amounts">
-            <button type="button" data-amount="100000">۱۰۰,۰۰۰</button>
-            <button type="button" data-amount="200000">۲۰۰,۰۰۰</button>
-            <button type="button" data-amount="500000">۵۰۰,۰۰۰</button>
-            <button type="button" data-amount="1000000">۱۰۰۰,۰۰۰</button>
+            <button type="button" data-amount="100000">۱۰۰,۰۰۰ تومان</button>
+            <button type="button" data-amount="200000">۲۰۰,۰۰۰ تومان</button>
+            <button type="button" data-amount="500000">۵۰۰,۰۰۰ تومان</button>
+            <button type="button" data-amount="1000000">۱۰۰۰,۰۰۰ تومان</button>
         </div>
 
         <button id="confirmBtn">افزایش موجودی و پرداخت</button>
