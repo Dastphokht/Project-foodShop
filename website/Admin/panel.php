@@ -623,9 +623,73 @@ function dc_saveDiscountCode() {
 
     document.addEventListener("DOMContentLoaded", renderDiscounts);
     // مدیریت پیام ها
+
+    // --------------------
+// پیام‌ها از دیتابیس
+// --------------------
+async function fetchMessages() {
+    const res = await fetch("get_messages.php");
+    const data = await res.json();
+
+    if (data.status !== "ok") return [];
+    return data.messages || [];
+}
+
+async function deleteMessage(id) {
+    if (!confirm("آیا از حذف این پیام مطمئن هستید؟")) return;
+
+    const formData = new FormData();
+    formData.append("id", id);
+
+    const res = await fetch("delete_message.php", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await res.json();
+
+    if (data.status === "ok") {
+        renderMessages();
+    } else {
+        alert(data.message || "خطا در حذف پیام");
+    }
+}
+
+async function renderMessages() {
+    const list = document.getElementById("dc-message-list");
+    const messages = await fetchMessages();
+
+    if (!messages.length) {
+        list.innerHTML = "<p>پیامی ثبت نشده است.</p>";
+        return;
+    }
+
+    list.innerHTML = messages.map(m => `
+        <div class="dc-message-item">
+            <div class="dc-message-header">
+                <span>${m.full_name}</span>
+                <span>${m.subject}</span>
+            </div>
+            <div class="dc-message-meta">
+                ${m.email} | ${m.phone || "-"} | ${m.created_at}
+            </div>
+            <div class="dc-message-text">
+                ${m.message}
+            </div>
+            <div class="dc-message-actions">
+                <button class="dc-delete" onclick="deleteMessage(${m.id})">حذف</button>
+            </div>
+        </div>
+    `).join("");
+}
+
+document.addEventListener("DOMContentLoaded", renderMessages);
+
+    /*
 function getMessages() {
     return JSON.parse(localStorage.getItem("dc_messages")) || [];
 }
+
 
 function deleteMessage(id) {
     if (!confirm("آیا از حذف این پیام مطمئن هستید؟")) return;
@@ -676,7 +740,7 @@ function renderMessages() {
         </div>
     `).join("");
 }
-
+*/
 document.addEventListener("DOMContentLoaded", renderMessages);
 
 
