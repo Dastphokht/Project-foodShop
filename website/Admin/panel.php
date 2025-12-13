@@ -107,10 +107,10 @@ if (isset($_GET['Avalible']))
                 <div class="item-box-dashboard">
                     <div class="icon_box_dashboard sale_dash"><i class="fa-regular fa-credit-card"></i></div>
                     <div class="text_box_dashboard">
-                        <h3>تعداد فروش</h3>
+                        <h3>میزان فروش</h3>
                         <p>
                             <span>12</span>
-                            فروش
+                            تومان
                         </p>
                     </div>
                 </div>
