@@ -5,6 +5,7 @@ const orderTotalText = document.getElementById("order-total-text");
 const shippingCostText = document.getElementById("shipping-cost-text");
 const payableAmountText = document.getElementById("payable-amount-text");
 const form = document.getElementById("customer-form");
+const shippingCost = localStorage.getItem("dc_shipping_cost") || 0;
 
 //const SHIPPING_COST = 25000;
 const persianRegex = /^[\u0600-\u06FF\s]+$/;      // فقط حروف فارسی و فاصله
