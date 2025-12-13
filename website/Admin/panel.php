@@ -62,6 +62,7 @@ if (isset($_GET['Avalible']))
                 <li data-name="user" class="li-menu-dashboard"><a href="#">مدیریت کاربران<i
                             class="fa-solid fa-user"></i></a></li>
                 <li class="li-menu-dashboard" data-name="cost"><a href="#">مدیریت هزینه ها<i class="fa-solid fa-sack-dollar"></i></a></li>
+                <li class="li-menu-dashboard" data-name="message"><a href="#">مدیریت پیام ها<i class="fa-solid fa-message"></i></a></li>
                 <li class="li-menu-dashboard"><a href="../index.html">ورود به سایت<i class="fa-solid fa-globe"></i></a></li>
             <!-- ++++++++++ logout   -->
                 <li class="li-menu-dashboard"><a href="../Admin/LogOut.php">خروج <i class="fa-solid fa-arrow-right-from-bracket"></i></a></li>
@@ -295,7 +296,16 @@ if (isset($_GET['Avalible']))
     </div>
 </div>
         </main>
+<main class="" data-id="message">
+<div class="dc-main">
+    <div class="pm-container">
+        <h2 class="dc-title">پیام‌های کاربران</h2>
 
+        <div id="dc-message-list" class="dc-message-list"></div>
+    </div>
+</div>
+
+</main>
     </section>
     <script src="../js/AddFood.js"></script>
     <script src="../js/chart.js"></script>
@@ -612,6 +622,63 @@ function dc_saveDiscountCode() {
     }
 
     document.addEventListener("DOMContentLoaded", renderDiscounts);
+    // مدیریت پیام ها
+function getMessages() {
+    return JSON.parse(localStorage.getItem("dc_messages")) || [];
+}
+
+function deleteMessage(id) {
+    if (!confirm("آیا از حذف این پیام مطمئن هستید؟")) return;
+
+    const messages = getMessages().filter(m => m.id !== id);
+    localStorage.setItem("dc_messages", JSON.stringify(messages));
+    renderMessages();
+}
+
+function renderMessages() {
+    const list = document.getElementById("dc-message-list");
+    const messages = getMessages();
+
+    if (!messages.length) {
+    list.innerHTML = `
+        <div class="dc-message-item">
+            <div class="dc-message-header">
+                <span>نمونه پیام</span>
+                <span>موضوع نمونه</span>
+            </div>
+            <div class="dc-message-meta">
+                example@mail.com | 09120000000 | 1403/01/01
+            </div>
+            <div class="dc-message-text">
+
+            </div>
+        </div>
+    `;
+    return;
+}
+
+
+    list.innerHTML = messages.map(m => `
+        <div class="dc-message-item">
+            <div class="dc-message-header">
+                <span>${m.name}</span>
+                <span>${m.subject}</span>
+            </div>
+            <div class="dc-message-meta">
+                ${m.email} | ${m.phone || "-"} | ${m.date}
+            </div>
+            <div class="dc-message-text">
+                ${m.message}
+            </div>
+            <div class="dc-message-actions">
+                <button class="dc-delete" onclick="deleteMessage(${m.id})">حذف</button>
+            </div>
+        </div>
+    `).join("");
+}
+
+document.addEventListener("DOMContentLoaded", renderMessages);
+
 
         </script>
         <script src="../js/order.js"></script>

@@ -1188,3 +1188,85 @@ main.user{
     margin-bottom: 10px;
     font-size: 14px;
 }
+
+/* مدیریت پیام ها */
+.pm-container{
+    background: white;
+    margin: auto;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-top: 6px solid #ff7a00;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+.dc-message-list {
+    margin-top: 20px;
+}
+
+.dc-message-item {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+    border: 1px solid #f0f0f0;
+    transition: 0.2s;
+}
+
+.dc-message-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+}
+
+.dc-message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.dc-message-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.dc-message-subject {
+    background: #FF8C42;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.dc-message-meta {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.dc-message-text {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #444;
+    margin-bottom: 14px;
+}
+
+.dc-message-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dc-message-actions button {
+    background: transparent;
+    border: none;
+    color: #e74c3c;
+    font-size: 13px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.dc-message-actions button:hover {
+    color: #c0392b;
+}
