@@ -1,0 +1,483 @@
+/* ============================================
+   CONTACT PAGE STYLES - رستوران
+   Design Philosophy: Modern Minimalism with Warmth
+   Colors: Orange (#FF8C42), Green (#2ECC71)
+   Font: Vazir
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap');
+
+/* ============================================
+   RESET & BASE STYLES
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: #ffffff;
+    color: #333333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        padding: 0 2rem;
+    }
+}
+
+/* ============================================
+   HEADER & NAVIGATION
+   ============================================ */
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+}
+
+.logo {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #FF8C42;
+    text-decoration: none;
+}
+
+nav .links {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav a:hover,
+nav a.active {
+    color: #FF8C42;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #E8F8F5, #ffffff);
+    padding: 2.5rem 0;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 0.8rem;
+}
+
+.hero h1 .green {
+    color: #2ECC71;
+}
+
+.hero p {
+    font-size: 1rem;
+    color: #666666;
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+/* Decorative Elements */
+.hero::before,
+.hero::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+}
+
+.hero::before {
+    top: 1.5rem;
+    left: 1.5rem;
+    width: 4rem;
+    height: 4rem;
+    background-color: #FF8C42;
+}
+
+.hero::after {
+    bottom: 3rem;
+    right: 1.5rem;
+    width: 6rem;
+    height: 6rem;
+    background-color: #2ECC71;
+}
+
+/* ============================================
+   MAIN CONTENT SECTION
+   ============================================ */
+
+.main-content {
+    padding: 3rem 0;
+    background-color: #ffffff;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Contact Information */
+.contact-info h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 1.5rem;
+}
+
+.info-card {
+    background: linear-gradient(135deg, #FFF5E6, #ffffff);
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.8rem;
+    transition: box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.info-card:nth-child(3) {
+    background: linear-gradient(135deg, #E8F8F5, #ffffff);
+}
+
+.info-card:nth-child(4) {
+    background: linear-gradient(135deg, #FFFEF0, #ffffff);
+}
+
+.info-card:nth-child(5) {
+    background: linear-gradient(135deg, #FCE4EC, #ffffff);
+}
+
+.info-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.info-card h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 0.4rem;
+}
+
+.info-card p {
+    color: #666666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.info-card a {
+    color: #FF8C42;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.info-card a:hover {
+    color: #E67E22;
+}
+
+/* Contact Form */
+.contact-form-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-box {
+    background: linear-gradient(135deg, #ffffff, #f9f9f9);
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-box h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 1rem;
+}
+
+.success-message {
+    background-color: #2ECC71;
+    color: white;
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    animation: slideUp 0.6s ease-out;
+}
+
+.success-message p:first-child {
+    font-weight: bold;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 0.4rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 0.6rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 0.5rem;
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #FF8C42;
+}
+
+.form-group textarea {
+    resize: none;
+}
+
+.btn-submit {
+    padding: 0.8rem;
+    background: linear-gradient(to right, #FF8C42, #F39C12);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    transform: scale(1.02);
+}
+
+/* ============================================
+   FAQ SECTION
+   ============================================ */
+
+.faq {
+    padding: 3rem 0;
+    background-color: #ffffff;
+}
+
+.faq-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333333;
+    margin-bottom: 3rem;
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: linear-gradient(135deg, #FFF5E6, #ffffff);
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.faq-item:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.faq-item:nth-child(2) {
+    background: linear-gradient(135deg, #E8F8F5, #ffffff);
+}
+
+.faq-item:nth-child(3) {
+    background: linear-gradient(135deg, #FFFEF0, #ffffff);
+}
+
+.faq-item:nth-child(4) {
+    background: linear-gradient(135deg, #FCE4EC, #ffffff);
+}
+
+.faq-item h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 0.8rem;
+}
+
+.faq-item p {
+    color: #666666;
+    line-height: 1.5;
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   CTA SECTION
+   ============================================ */
+
+.cta {
+    padding: 3rem 0;
+    background: linear-gradient(to right, #2ECC71, #27AE60);
+    text-align: center;
+    color: white;
+}
+
+.cta h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+}
+
+.cta p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.btn-cta {
+    padding: 0.8rem 2rem;
+    background-color: white;
+    color: #2ECC71;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.btn-cta:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .map-placeholder {
+        min-height: 250px;
+    }
+
+    .map-icon {
+        font-size: 2.5rem;
+    }
+
+    .cta h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    nav .links {
+        gap: 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .hero h1 {
+        font-size: 1.4rem;
+    }
+
+    .contact-info h2,
+    .form-box h2,
+    .map-title,
+    .faq-title {
+        font-size: 1.4rem;
+    }
+
+    .info-card {
+        flex-direction: column;
+    }
+}

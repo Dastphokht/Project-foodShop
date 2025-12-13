@@ -1,0 +1,506 @@
+/* ============================================
+   ABOUT PAGE STYLES - رستوران
+   Design Philosophy: Modern Minimalism with Warmth
+   Colors: Orange (#FF8C42 ), Green (#2ECC71)
+   Font: Vazir
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap' );
+
+/* ============================================
+   RESET & BASE STYLES
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: #ffffff;
+    color: #333333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        padding: 0 2rem;
+    }
+}
+
+/* ============================================
+   MENU STYLES
+   ============================================ */
+
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.menuRight ul,
+.menuLeft ul {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    align-items: center;
+}
+
+.menuRight .logo a img {
+    height: 35px;
+    width: auto;
+}
+
+.menuRight .hover a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.menuRight .hover a:hover {
+    color: #FF8C42;
+}
+
+.menuLeft a {
+    text-decoration: none;
+    color: #333333;
+    transition: color 0.3s ease;
+}
+
+.menuLeft a img {
+    height: 28px;
+    width: auto;
+}
+
+.btn_menu_a {
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.buttonLogin {
+    background-color: #FF8C42;
+    color: white;
+}
+
+.buttonLogin:hover {
+    background-color: #E67E22;
+}
+
+.fa-bars {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .fa-bars {
+        display: block;
+    }
+
+    .menuRight ul,
+    .menuLeft ul {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes floatEmoji {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-8px) rotate(4deg);
+    }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+}
+
+.animate-float-emoji {
+    animation: floatEmoji 3s ease-in-out infinite;
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #FFF5E6, #ffffff);
+    padding: 3rem 0;
+}
+
+.hero-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+.hero-left h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+    .hero-left h1 {
+        font-size: 2rem;
+    }
+}
+
+.hero-left h1 .orange {
+    color: #FF8C42;
+}
+
+.hero-left p {
+    font-size: 1rem;
+    color: #666666;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.buttons {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 0.6rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    font-family: 'Vazirmatn', sans-serif;
+}
+
+.btn-primary {
+    background-color: #FF8C42;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #E67E22;
+    transform: scale(1.05);
+}
+
+.hero-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.emoji-large {
+    font-size: 4.5rem;
+}
+
+/* Decorative Elements */
+.hero::before,
+.hero::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+}
+
+.hero::before {
+    top: 2rem;
+    right: 2rem;
+    width: 4rem;
+    height: 4rem;
+    background-color: #2ECC71;
+}
+
+.hero::after {
+    bottom: 4rem;
+    left: 2rem;
+    width: 6rem;
+    height: 6rem;
+    background-color: #FF8C42;
+}
+
+/* ============================================
+   STORY SECTION
+   ============================================ */
+
+.story {
+    padding: 3rem 0;
+    background-color: #ffffff;
+}
+
+.story-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.story-header h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 0.8rem;
+}
+
+.divider {
+    width: 3rem;
+    height: 0.2rem;
+    background-color: #FF8C42;
+    margin: 0 auto;
+}
+
+.story-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.story-card {
+    background: linear-gradient(135deg, #FFF5E6, #ffffff);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.story-card:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    transform: scale(1.03);
+}
+
+.story-card:nth-child(2) {
+    background: linear-gradient(135deg, #E8F8F5, #ffffff);
+}
+
+.story-card:nth-child(3) {
+    background: linear-gradient(135deg, #FFFEF0, #ffffff);
+}
+
+.story-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.story-card h3 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 0.5rem;
+}
+
+.story-card p {
+    color: #666666;
+    line-height: 1.5;
+}
+
+/* ============================================
+   VALUES SECTION
+   ============================================ */
+
+.values {
+    padding: 3rem 0;
+    background: linear-gradient(to right, #FFF5E6, #ffffff, #E8F8F5);
+}
+
+.values-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333333;
+    margin-bottom: 3rem;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+}
+
+.value-item {
+    display: flex;
+    gap: 1rem;
+}
+
+.value-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    background-color: #FF8C42;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.value-icon.green {
+    background-color: #2ECC71;
+}
+
+.value-icon.yellow {
+    background-color: #F39C12;
+}
+
+.value-icon.orange {
+    background-color: #E67E22;
+}
+
+.value-item h3 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 0.4rem;
+}
+
+.value-item p {
+    color: #666666;
+    line-height: 1.5;
+}
+
+/* ============================================
+   TEAM SECTION
+   ============================================ */
+
+.team {
+    padding: 3rem 0;
+    background-color: #ffffff;
+}
+
+.team-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333333;
+    margin-bottom: 3rem;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+}
+
+.team-member {
+    text-align: center;
+}
+
+.member-avatar {
+    font-size: 3rem;
+    margin-bottom: 0.8rem;
+}
+
+.team-member h3 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 0.4rem;
+}
+
+.member-role {
+    color: #FF8C42;
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+}
+
+.member-bio {
+    color: #666666;
+    font-size: 0.85rem;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .value-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    .member-avatar {
+        font-size: 2.5rem;
+    }
+
+    .cta h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-left h1 {
+        font-size: 1.8rem;
+    }
+
+    .menuRight ul,
+    .menuLeft ul {
+        gap: 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    .story-header h2,
+    .values-title,
+    .team-title {
+        font-size: 1.5rem;
+    }
+}
