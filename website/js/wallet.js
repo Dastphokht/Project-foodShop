@@ -43,49 +43,57 @@ const quickButtons = document.querySelectorAll('.quick-amounts button');
 // مدیریت ورودی مبلغ (فرمت‌بندی و اعتبارسنجی)
 // ---------------------------------------------------
 amountInput.addEventListener("input", () => {
-    // تومان رو حذف کن (اگه وجود داشت)
-    let val = removeToman(amountInput.value);
 
-    // فقط رقم‌ها رو نگه دار
-    let clean = stripToDigits(val);
-
-    // انگلیسی → فارسی
-    clean = clean.replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
-
-    // کاماگذاری و نمایش
-    amountInput.value = formatFarsi(clean);
-
-    errorMsg.style.display = 'none';
-});
-
-amountInput.addEventListener("focus", () => {
-    amountInput.value = removeToman(amountInput.value);
-});
-
-amountInput.addEventListener("blur", () => {
-    let val = removeToman(amountInput.value);
-    let clean = stripToDigits(val);
-
-    if (clean.length > 0) {
-        amountInput.value = formatFarsi(clean) + " تومان";
-    } else {
-        amountInput.value = "";
+    let raw = removeToman(amountInput.value);
+    let digits = stripToDigits(raw);
+    let eng = persianToEnglish(digits);
+  
+    if (!eng) {
+      amountInput.value = "";
+      return;
     }
-});
+  
+    amountInput.value = formatFarsi(eng);
+    errorMsg.style.display = "none";
+  });
+  
+  amountInput.addEventListener("focus", () => {
+    amountInput.value = removeToman(amountInput.value);
+  });
+  
+  amountInput.addEventListener("blur", () => {
+    let raw = removeToman(amountInput.value);
+    let digits = stripToDigits(raw);
+    let eng = persianToEnglish(digits);
+  
+    if (!eng) {
+      amountInput.value = "";
+      return;
+    }
+  
+    amountInput.value = formatFarsi(eng) + " تومان";
+  });  
+  
 
-
-quickButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        let val = btn.getAttribute('data-amount');
-        amountInput.value = formatFarsi(val) + " تومان";
-        errorMsg.style.display = 'none';
+  quickButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+  
+      // متن دکمه → عدد واقعی
+      let raw = btn.textContent;
+      let digits = stripToDigits(raw);
+      let eng = persianToEnglish(digits);
+  
+      amountInput.value = formatFarsi(eng) + " تومان";
+      errorMsg.style.display = "none";
     });
-});
+  });
+  
 
 
 // ---------------------------------------------------
 // منطق دکمه پرداخت
 // ---------------------------------------------------
+/*
 confirmBtn.addEventListener('click', () => {
 
     // تبدیل مبلغ وارد شده (فارسی و بدون کاما) به عدد انگلیسی برای استفاده در localStorage
@@ -112,3 +120,23 @@ confirmBtn.addEventListener('click', () => {
     window.location.href = 'dargah.php?mode=wallet'; 
 
 });
+*/
+confirmBtn.addEventListener("click", () => {
+
+    let raw = removeToman(amountInput.value);
+    let digits = stripToDigits(raw);
+    let amount = parseInt(persianToEnglish(digits), 10);
+  
+    if (isNaN(amount) || amount <= 0) {
+      errorMsg.textContent = "لطفاً مبلغ معتبر وارد کنید";
+      errorMsg.style.display = "block";
+      return;
+    }
+  
+    // عدد خام و تمیز
+    localStorage.setItem("payableAmount", amount);
+    localStorage.setItem("payType", "wallet");
+  
+    window.location.href = "dargah.php?mode=wallet";
+  });
+  
