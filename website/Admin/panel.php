@@ -252,60 +252,19 @@ if (isset($_GET['Avalible']))
         </main>
 
         <main class="" data-id="cost">
-        <div class="dc-main">
-        <div class="dc-container">
-         <div class="code-takfif">
-         <h2 class="dc-title">مدیریت کد تخفیف</h2>
-
-<div class="dc-section-title">افزودن کد تخفیف جدید</div>
-
-<label class="dc-label">کد تخفیف:</label>
-<input type="text" id="dc-code" class="dc-input" placeholder="مثال: OFF50">
-
-<label class="dc-label">درصد تخفیف:</label>
-<input type="number" id="dc-percent" class="dc-input" placeholder="مثال: 20">
-
-<label class="dc-label">وضعیت:</label>
-<select id="dc-is-active" class="dc-input">
-    <option value="1">فعال</option>
-    <option value="0">غیرفعال</option>
-</select>
-
-<button class="dc-btn" onclick="dc_saveDiscountCode()">ذخیره کد تخفیف</button>
-<div id="dc-msg1" class="dc-success">کد تخفیف با موفقیت ذخیره شد.</div>
-<div class="dc-section-title">لیست کدهای تخفیف</div>
-
-<div id="dc-discount-list" class="dc-list"></div>
-<br><br>
-         </div>
-        <div class="hazine-ersal">
-        <h2 class="dc-title">مدیریت  هزینه ارسال</h2>
-        <div class="dc-section-title">تنظیم هزینه ارسال</div>
-
-<label class="dc-label">هزینه ارسال (تومان):</label>
-<input type="number" id="dc-shipping" class="dc-input" placeholder="مثال: 30000">
-<div id="dc-current-shipping" class="dc-current">
-    هزینه ارسال فعلی: <strong>-</strong> تومان
-</div>
-
-<button class="dc-btn" onclick="dc_saveShipping()">ذخیره هزینه ارسال</button>
-<div id="dc-msg2" class="dc-success">هزینه ارسال ذخیره شد.</div>
-
-        </div>
-
-    </div>
-</div>
+             <?php include "shipping.php"; ?>
+               
         </main>
-<main class="" data-id="message">
-<div class="dc-main">
-    <div class="pm-container">
-        <h2 class="dc-title">پیام‌های کاربران</h2>
+        <main class="" data-id="message">
+            <div class="dc-main">
+                <div class="pm-container">
+                    <h2 class="dc-title">پیام‌های کاربران</h2>
 
-        <div id="dc-message-list" class="dc-message-list"></div>
-    </div>
-</div>
+                    <div id="dc-message-list" class="dc-message-list"></div>
+                </div>
+            </div>
 
-</main>
+        </main>
     </section>
     <script src="../js/AddFood.js"></script>
     <script src="../js/chart.js"></script>
@@ -341,34 +300,7 @@ if (isset($_GET['Avalible']))
         });
     });
     
-            // var ctx = document.getElementById("myChart").getContext("2d");
-            // var myChart = new Chart(ctx, {
-            //     type: 'polarArea',
-            //     data: {
-            //         labels: ["غذای ایرانی", "فست فود", "کباب ", "سوخاری", "نوشیدنی "],
-            //         datasets: [
-            //             {
-            //                 label: "",
-            //                 data: [15, 2, 13, 5, 10],
-            //                 backgroundColor: [
-            //                     "rgba(255, 99, 132, 1)",
-            //                     "rgba(54, 162, 235, 1)",
-            //                     "rgba(255, 206, 86, 1)",
-            //                     "rgba(75, 192, 192, 1)",
-            //                     "rgba(153, 102, 255, 1)",
-            //                 ],
-    
-            //                 borderWidth: 1
-            //             }
-            //         ]
-            //     },
-            //     options: {
-            //         scales: {
-    
-            //         }
-            //     }
-            // });
-    
+           
 
     
             function toggleMenu() {
@@ -476,152 +408,6 @@ function changeStatus(select, event) {
     if (select.value === "delivering") summary.classList.add("status-delivering");
 }
 
-
-// مدیریت هزینه ها
-function dc_saveDiscountCode() {
-        const code = document.getElementById("dc-code").value;
-        const percent = document.getElementById("dc-percent").value;
-        const is_active = document.getElementById("dc-is-active").value;
-
-        if (!code || !percent) {
-            alert("تمام فیلدها باید پر شوند.");
-            return;
-        }
-
-        const data = {
-            code,
-            percent_off: percent,
-            is_active
-        };
-
-        localStorage.setItem("discount_code", JSON.stringify(data));
-
-        document.getElementById("dc-msg1").style.display = "block";
-        setTimeout(() => document.getElementById("dc-msg1").style.display = "none", 2500);
-    }
-
-    // function dc_saveShipping() {
-    //     const cost = document.getElementById("dc-shipping").value;
-
-    //     if (!cost) {
-    //         alert("لطفاً هزینه ارسال را وارد کنید.");
-    //         return;
-    //     }
-
-    //     localStorage.setItem("shipping_cost", cost);
-
-    //     document.getElementById("dc-msg2").style.display = "block";
-    //     setTimeout(() => document.getElementById("dc-msg2").style.display = "none", 2500);
-    // }
-    function loadShippingCost() {
-        const cost = localStorage.getItem("dc_shipping_cost");
-
-        if (cost) {
-            document.querySelector("#dc-current-shipping strong").innerText = cost;
-            document.getElementById("dc-shipping").value = cost;
-        }
-    }
-
-    function dc_saveShipping() {
-        const cost = document.getElementById("dc-shipping").value;
-
-        if (!cost || cost <= 0) {
-            alert("لطفاً هزینه ارسال معتبر وارد کنید.");
-            return;
-        }
-
-        localStorage.setItem("dc_shipping_cost", cost);
-
-        document.querySelector("#dc-current-shipping strong").innerText = cost;
-        document.getElementById("dc-shipping").value = "";
-        document.getElementById("dc-msg2").style.display = "block";
-        setTimeout(() => {
-            document.getElementById("dc-msg2").style.display = "none";
-        }, 2000);
-    }
-
-    document.addEventListener("DOMContentLoaded", loadShippingCost);
-    function getDiscounts() {
-        return JSON.parse(localStorage.getItem("dc_discounts")) || [];
-    }
-
-    function setDiscounts(data) {
-        localStorage.setItem("dc_discounts", JSON.stringify(data));
-    }
-
-    function dc_saveDiscountCode() {
-        const code = document.getElementById("dc-code").value.trim();
-        const percent = document.getElementById("dc-percent").value;
-        const is_active = document.getElementById("dc-is-active").value === "1";
-
-        if (!code || !percent) {
-            alert("تمام فیلدها باید پر شوند.");
-            return;
-        }
-
-        const discounts = getDiscounts();
-
-        discounts.push({
-            id: Date.now(),
-            code,
-            percent,
-            is_active
-        });
-
-        setDiscounts(discounts);
-        renderDiscounts();
-
-        document.getElementById("dc-code").value = "";
-        document.getElementById("dc-percent").value = "";
-
-        document.getElementById("dc-msg1").style.display = "block";
-        setTimeout(() => document.getElementById("dc-msg1").style.display = "none", 2000);
-    }
-
-    function toggleDiscount(id) {
-        const discounts = getDiscounts().map(d => {
-            if (d.id === id) d.is_active = !d.is_active;
-            return d;
-        });
-        setDiscounts(discounts);
-        renderDiscounts();
-    }
-
-    function deleteDiscount(id) {
-        if (!confirm("آیا از حذف این کد مطمئن هستید؟")) return;
-        const discounts = getDiscounts().filter(d => d.id !== id);
-        setDiscounts(discounts);
-        renderDiscounts();
-    }
-
-    function renderDiscounts() {
-        const list = document.getElementById("dc-discount-list");
-        const discounts = getDiscounts();
-
-        if (!discounts.length) {
-            list.innerHTML = "<p>کدی ثبت نشده است.</p>";
-            return;
-        }
-
-        list.innerHTML = discounts.map(d => `
-            <div class="dc-item">
-                <div class="dc-item-info">
-                    <strong>${d.code}</strong> — ${d.percent}% 
-                    (${d.is_active ? "فعال" : "غیرفعال"})
-                </div>
-                <div class="dc-item-actions">
-                    <button class="dc-toggle" onclick="toggleDiscount(${d.id})">
-                        ${d.is_active ? "غیرفعال" : "فعال"}
-                    </button>
-                    <button class="dc-delete" onclick="deleteDiscount(${d.id})">
-                        حذف
-                    </button>
-                </div>
-            </div>
-        `).join("");
-    }
-
-    document.addEventListener("DOMContentLoaded", renderDiscounts);
     // مدیریت پیام ها
 
     // --------------------
