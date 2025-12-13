@@ -16,8 +16,8 @@ if (isset($_GET['user'])) {
             <li class="logo"><a href="index.html"><img src="asset/icon/logo.png" alt="logo"></a></li>
             <li class="hover"><a href="index.html">خانه</a></li>
             <li class="hover"><a href="food.php">منو</a></li>
-            <li class="hover"><a href="about.html">درباره ما</a></li>
-            <li class="hover"><a href="contact.html">تماس با ما</a></li>
+            <li class="hover"><a href="about.php">درباره ما</a></li>
+            <li class="hover"><a href="contact.php">تماس با ما</a></li>
         </ul>
         <i class="fa fa-bars" id="bars"></i>
     </div>

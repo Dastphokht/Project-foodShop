@@ -9,10 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/contact.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Menu -->
-
+    <?php include('Menu.php');  ?>
     <!-- Hero Section -->
     <section class="hero">
         <div class="container animate-slide-up">
