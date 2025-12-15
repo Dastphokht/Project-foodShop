@@ -141,7 +141,8 @@ a {
     border-radius: 10px;
     width: 200px;
     margin-left: 30px;
-    color: #fff;;
+    color: #fff;
+    padding: 10px 20px;
 }
 .vorod_btn{
     padding: 10px 40px !important;
@@ -692,13 +693,14 @@ span.span_click_btn{
     display: none;
     position: absolute;
     top: 60px;
-    right: 0;
-    width: 200px;
+    right: -30px;
+    width: 150px;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
     overflow: hidden;
     z-index: 99999 !important;
+    margin-top: -5px;
 }
 
 .user-dropdown.show {
