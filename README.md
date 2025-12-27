@@ -47,10 +47,10 @@ The system focuses on core functionalities and delivers a working MVP.
 - JavaScript
 
 ### Backend
-- (e.g., PHP / Node.js — update according to your project)
+- PHP
 
 ### Database
-- MySQL  
+- PHP MyAdmin
 **Reason for selection:**
 - Lightweight and simple
 - Suitable for small to medium projects
@@ -59,22 +59,18 @@ The system focuses on core functionalities and delivers a working MVP.
 ---
 
 ## 🗂 Project Structure
-
+```text
 project-root/
-│
 ├── frontend/
-│ ├── pages/
-│ ├── css/
-│ └── js/
-│
+│   ├── pages/
+│   ├── css/
+│   └── js/
 ├── backend/
-│ ├── controllers/
-│ ├── models/
-│ └── routes/
-│
+│   ├── controllers/
+│   ├── models/
+│   └── routes/
 ├── database/
-│ └── database.sql
-│
+│   └── database.sql
 └── README.md
 
 
