@@ -68,36 +68,79 @@ The system focuses on core functionalities and delivers a working MVP.
 
 ## 🗂 Project Structure
 ```text
-project-root/
-├── Admin/
-├── asset/
-├── css/
-├── js/
-├── database/
-├── index.html
-├── food.html
-├── food.php
-├── shoppingCart.html
-├── shoppingCart.php
-├── wallet.html
-├── wallet.php
-├── order.php
-├── orderStatus.php
-├── login.html
-├── register.html
-├── login.php
-├── register.php
-├── about.php
-├── contact.php
-├── save_contact.php
-├── save_info.php
-├── check_discount.php
-├── check_stock.php
-├── process_payment.php
-├── sync_cart.php
-├── SessionCheck.php
-├── LogOut.php
-└── README.md
+Dastpokht2/
+│
+├── website/
+│   │
+│   ├── index.php                  # Main landing page
+│   ├── login.php                  # User login logic
+│   ├── register.php               # User registration logic
+│   ├── shoppingCart.php           # Shopping cart backend
+│   ├── sync_cart.php              # Sync cart data between client and server
+│   ├── wallet.php                 # User wallet logic
+│   ├── wallet_success.php         # Wallet payment success page
+│   ├── order.php                  # Order placement logic
+│   ├── process_payment.php        # Payment processing logic
+│   │
+│   ├── style.css                  # Main website styles
+│   │
+│   ├── Admin/                     # Admin panel
+│   │   ├── index.html             # Admin landing page
+│   │   ├── login.html             # Admin login page
+│   │   ├── panel.php              # Admin dashboard
+│   │   ├── users.php              # Users management page
+│   │   ├── orders.php             # Orders management page
+│   │   ├── shipping.php           # Shipping overview
+│   │   ├── FoodManager.php        # Food/products management
+│   │   ├── api_foods.php          # API endpoint for foods data
+│   │   ├── getDashboardStats.php  # Fetch dashboard statistics
+│   │   ├── get_messages.php       # Retrieve user messages
+│   │   ├── delete_message.php     # Delete user messages
+│   │   │
+│   │   └── ...
+│   │
+│   ├── asset/                     # static assets
+│   │       ├── font/               
+│   │       ├── icon/
+│   │       └── img/
+│   │            └── FoodImage/
+│   │      
+│   ├── js                     # Retrieve user messages
+│   │    ├── AddFood.js        # Handle adding new food items in admin panel
+│   │    ├── chart.js          # Render charts and statistics for admin dashboard
+│   │    ├── dargah.js         # Payment gateway client-side logic
+│   │    ├── food.js           # Food listing and selection logic
+│   │    ├── foodManager.js    # Admin-side food management interactions
+│   │    ├── information.js    # Handle user information form actions
+│   │    ├── login.js          # User login form validation and actions
+│   │    ├── order.js          # Order submission and status handling
+│   │    ├── register.js       # User registration form validation
+│   │    ├── shipping.js       # Shipping management interactions (admin)
+│   │    ├── shoppingCart.js   # Shopping cart client-side logic
+│   │    ├── users.js          # Admin users management interactions
+│   │    └── wallet.js         # Wallet charge and balance update logic
+│   │
+│   │                                            
+│   ├── css/
+│   │    ├── index.css          # Main styles for the home page
+│   │    ├── about.css          # Styles for the About page
+│   │    ├── contact.css        # Styles for the Contact page
+│   │    ├── login.css          # Login page styles
+│   │    ├── register.css       # User registration page styles
+│   │    ├── panel.css          # User/Admin dashboard styles
+│   │    ├── AddFood.css        # Styles for adding new food items
+│   │    ├── food.css           # Food listing and details styles
+│   │    ├── shoppingCart.css   # Shopping cart page styles
+│   │    ├── orderStatus.css    # Order status and tracking styles
+│   │    ├── wallet.css         # User wallet and balance styles
+│   │    ├── information.css    # User information and profile styles
+│   │    ├── dargah.css         # Payment gateway page styles
+│   │        
+│   │  
+│   └── ...
+│
+└── README.md                      # Project documentation
+
 
 
 ---
