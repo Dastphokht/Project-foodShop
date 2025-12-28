@@ -56,6 +56,8 @@ The system focuses on core functionalities and delivers a working MVP.
 
 ### Backend
 - PHP
+- MySQL
+-JavaScript (AJAX for communicating with APIs)
 
 ### Database
 - PHP MyAdmin
@@ -143,33 +145,6 @@ Dastpokht2/
 
 
 
----
-
-## 🧱 Class Design & Responsibilities
-
-### User Class
-- Handles user registration and login
-- Stores user information
-- Manages user roles (admin / normal user)
-
-### Food Class
-- Stores food details
-- Handles adding, editing, deleting foods
-- Enables activating or deactivating food items
-
-### Order Class
-- Manages order creation
-- Stores order status
-- Links users with ordered food items
-
-### Wallet Class
-- Manages user wallet balance
-- Handles refunds in case of order cancellation
-
-### Discount Class
-- Manages discount codes
-- Applies discounts to orders
-- Calculates final order price
 
 ---
 
@@ -188,13 +163,65 @@ Dastpokht2/
 
 ---
 
+
+## 🧱 Website – Backend Overview
+
+This section contains the backend logic of the website, responsible for authentication, shopping cart management, orders, payments, and wallet features.
+
+### Backend Files
+- **ActionLogin.php / SessionCheck.php / LogOut.php**  
+  Handle user authentication, session management, and logout.
+- **register.php / save_info.php**  
+  Manage user registration and profile data.
+- **db.php**  
+  Manages the MySQL database connection.
+- **shoppingCart.php / sync_cart.php**  
+  Handle shopping cart operations and synchronization.
+- **check_stock.php**  
+  Validates product availability before checkout.
+- **check_discount.php**  
+  Applies and validates discount codes.
+- **process_payment.php**  
+  Handles payment processing and order completion.
+- **orderStatus.php**  
+  Retrieves order status information.
+- **wallet.php / wallet_success.php**  
+  Manage wallet balance and transactions.
+- **AddFood.php**  
+  Handles food/product management.
+- **save_contact.php**  
+  Stores user contact messages.
+
+
+
+---
+
 ## 📦 Admin Panel Features
-- Food management (Add / Edit / Delete / Activate / Deactivate)
-- User management (Admin & Normal users)
-- Order management and status updates
-- Discount code management
-- Delivery cost management
-- User messages management (Contact Us)
+
+This section contains the backend logic for the **Admin Panel**, which is separated from the main website.
+
+### Backend Files
+- **ActionLogin.php / SessionCheck.php / LogOut.php**  
+  Handle admin authentication and session management.
+- **db.php**  
+  Manages the MySQL database connection.
+- **FoodManager.php**  
+  Handles food management operations (CRUD).
+- **api_foods.php**  
+  Provides food data to the admin panel in JSON format.
+- **orders.php**  
+  Manages orders.
+- **get_messages.php / delete_message.php**  
+  Handle user messages.
+- **getDashboardStats.php / getChartData.php**  
+  Provide dashboard statistics and chart data.
+
+### Notes
+- Backend is implemented using PHP.
+- Communication is done via AJAX.
+- Data is exchanged in JSON format.
+- Access control is handled using PHP sessions.
+
 
 ---
 
