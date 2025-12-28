@@ -40,9 +40,9 @@ The system focuses on core functionalities and delivers a working MVP.
 ---
 
 ## project preview
-![main page](website/asset/img/img2.png)
-![Admin Dashboard](website/asset/img/img1.png)
-![food menu](website/asset/img/img3.png)
+![main page](./website/asset/img/img2.png)
+![Admin Dashboard](./website/asset/img/img1.png)
+![food menu](./website/asset/img/img3.png)
 
 ## 🛠 Technologies & Tools
 
