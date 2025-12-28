@@ -263,23 +263,44 @@ function dc_saveDiscountCode() {
             // نمایش پیام موفقیت
             showTempMessage('کد تخفیف با موفقیت ذخیره شد', 'success');
             
-            // اضافه کردن کد جدید به لیست
+            // // اضافه کردن کد جدید به لیست
             const discountList = document.getElementById('dc-discount-list');
+            // const newItem = document.createElement('div');
+            // newItem.className = 'discount-item';
+            // newItem.id = 'discount-' + data.id;
+            // newItem.innerHTML = `
+            //     <span class="code-display">کد: ${code}</span>
+            //     <span class="percent-display">درصد: ${percent}%</span>
+            //     <span class="status-container">
+            //         وضعیت: 
+            //         <button class="status-btn ${isActive == '1' ? 'active' : 'inactive'}" 
+            //                 onclick="dc_toggleStatus(${data.id}, ${isActive})">
+            //             ${isActive == '1' ? 'فعال' : 'غیرفعال'}
+            //         </button>
+            //     </span>
+            //     <button class="delete-btn" onclick="dc_deleteDiscount(${data.id})">حذف</button>
+            // `;
+
+
             const newItem = document.createElement('div');
-            newItem.className = 'discount-item';
-            newItem.id = 'discount-' + data.id;
-            newItem.innerHTML = `
-                <span class="code-display">کد: ${code}</span>
-                <span class="percent-display">درصد: ${percent}%</span>
-                <span class="status-container">
-                    وضعیت: 
-                    <button class="status-btn ${isActive == '1' ? 'active' : 'inactive'}" 
+                newItem.className = 'dc-item';
+                newItem.id = 'discount-' + data.id;
+
+                newItem.innerHTML = `
+                    <div class="dc-item-info">
+                        <span class="code-display">کد: ${code}</span>
+                        <span class="percent-display">درصد: ${percent}%</span>
+                    </div>
+                    <div class="dc-item-actions">
+                        وضعیت:
+                        <button class="dc-toggle status-btn ${isActive == '1' ? 'active' : 'inactive'}"
                             onclick="dc_toggleStatus(${data.id}, ${isActive})">
-                        ${isActive == '1' ? 'فعال' : 'غیرفعال'}
-                    </button>
-                </span>
-                <button class="delete-btn" onclick="dc_deleteDiscount(${data.id})">حذف</button>
-            `;
+                            ${isActive == '1' ? 'فعال' : 'غیرفعال'}
+                        </button>
+                    </div>
+                    <button class="dc-delete dc-item" onclick="dc_deleteDiscount(${data.id})">حذف</button>
+                `;
+
             
             // حذف پیام "هیچ کدی یافت نشد" اگر وجود دارد
             const noDataMsg = discountList.querySelector('.no-data');
