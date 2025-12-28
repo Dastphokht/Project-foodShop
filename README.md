@@ -39,6 +39,11 @@ The system focuses on core functionalities and delivers a working MVP.
 
 ---
 
+## project preview
+![main page](website/asset/img/img2.png)
+![Admin Dashboard](website/asset/img/img1.png)
+![food menu](website/asset/img/img3.png)
+
 ## 🛠 Technologies & Tools
 
 ### Frontend
@@ -61,23 +66,36 @@ The system focuses on core functionalities and delivers a working MVP.
 ## 🗂 Project Structure
 ```text
 project-root/
-├── frontend/
-│   ├── pages/
-│   ├── css/
-│   └── js/
-├── backend/
-│   ├── controllers/
-│   ├── models/
-│   └── routes/
+├── Admin/
+├── asset/
+├── css/
+├── js/
 ├── database/
-│   └── database.sql
+├── index.html
+├── food.html
+├── food.php
+├── shoppingCart.html
+├── shoppingCart.php
+├── wallet.html
+├── wallet.php
+├── order.php
+├── orderStatus.php
+├── login.html
+├── register.html
+├── login.php
+├── register.php
+├── about.php
+├── contact.php
+├── save_contact.php
+├── save_info.php
+├── check_discount.php
+├── check_stock.php
+├── process_payment.php
+├── sync_cart.php
+├── SessionCheck.php
+├── LogOut.php
 └── README.md
 
-
-**Structure Description:**
-- `frontend/`: User interface and client-side logic
-- `backend/`: Server-side logic and database interaction
-- `database/`: Database schema and tables
 
 ---
 
