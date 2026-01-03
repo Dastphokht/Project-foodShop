@@ -143,7 +143,70 @@ Dastpokht2/
 │
 └── README.md                      # Project documentation
 
+---
+## 🧱 Project Architecture 
 
+
+The system is designed using a layered architecture to clearly separate responsibilities and improve maintainability.
+
+### Layers of the System
+
+#### 1. Presentation Layer
+Responsible for displaying data and interacting with the user.
+
+- PHP pages
+- HTML/CSS layouts
+
+Examples:
+- food.php
+- shoppingCart.php
+- dargah.php
+- CSS files
+
+---
+
+#### 2. Client Logic Layer (JavaScript)
+Handles client-side interactions and logic.
+
+- Shopping cart handling
+- Quantity control
+- AJAX communication
+- Form validation
+
+Examples:
+- food.js
+- shoppingCart.js
+- dargah.js
+- wallet.js
+
+---
+
+#### 3. Application / Business Logic Layer
+Implements core system rules and workflows.
+
+- Order processing
+- Stock validation
+- Payment handling
+- Discount validation
+
+Examples:
+- process_payment.php
+- check_stock.php
+- check_discount.php
+- sync_cart.php
+
+---
+
+#### 4. Data Layer
+Responsible for data persistence and retrieval.
+
+- MySQL database
+- phpMyAdmin
+- db.php
+
+---
+
+### Layer Communication Flow
 
 
 ---
@@ -161,8 +224,120 @@ Dastpokht2/
 2. Admin updates order status (Preparing / Sent / Cancelled)
 3. In case of cancellation, the wallet balance is refunded
 
+
 ---
 
+## 🧩 Conceptual Class Design (Deep Dive 2)
+
+Although the project does not use Object-Oriented Programming classes,
+it is structured using **conceptual classes**, where each module represents
+a logical responsibility within the system.
+
+---
+
+### 1. User Management Class
+**Responsibilities:**
+- User authentication
+- Session handling
+- Wallet management
+
+**Files:**
+- register.php
+- ActionLogin.php
+- SessionCheck.php
+- LogOut.php
+- wallet.php
+- wallet_success.php
+
+---
+
+### 2. Food Management Class
+**Responsibilities:**
+- Display food menu
+- Manage food stock
+- Admin food CRUD operations
+
+**Files:**
+- food.php
+- AddFood.php
+- FoodManager.php
+- api_foods.php
+- food.js
+- foodManager.js
+
+---
+
+### 3. Shopping Cart Class
+**Responsibilities:**
+- Add/remove items
+- Update quantities
+- Sync guest and logged-in carts
+
+**Files:**
+- shoppingCart.php
+- shoppingCart.js
+- sync_cart.php
+- get_cart.php
+- check_stock.php
+
+---
+
+### 4. Order Management Class
+**Responsibilities:**
+- Order registration
+- Order item storage
+- Order status tracking
+- Admin order control
+
+**Files:**
+- order.php
+- order_success.php
+- orderStatus.php
+- getOrderStatus.php
+- orders.php
+- updateStatus.php
+
+---
+
+### 5. Payment & Wallet Class
+**Responsibilities:**
+- Online payment processing
+- Wallet payments
+- Finalizing orders
+
+**Files:**
+- dargah.php
+- dargah.js
+- process_payment.php
+- wallet.php
+
+---
+
+### 6. Discount & Shipping Class
+**Responsibilities:**
+- Discount validation
+- Shipping cost management
+
+**Files:**
+- check_discount.php
+- shipping.php
+- shipping_manager.php
+- shipping.js
+
+---
+
+### 7. Contact & Messaging Class
+**Responsibilities:**
+- Store user messages
+- Admin message management
+
+**Files:**
+- contact.php
+- save_contact.php
+- get_messages.php
+- delete_message.php
+
+---
 
 ## 🧱 Website – Backend Overview
 
