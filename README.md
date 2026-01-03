@@ -14,7 +14,7 @@ Due to time constraints and MVP scope, the project was implemented using a **sim
 |---|---|
 | Rahil Ahmadi | Scrum Master / Frontend Developer |
 | Zahra Habibollahi | Backend Developer |
-| Faizeh Ehsanfar | Database Manager / Backend Developer |
+| Faezeh Ehsanfar | Database Manager / Backend Developer |
 | Fatemeh Dadavand | UI Designer / Frontend Developer |
 
 ---
@@ -227,7 +227,7 @@ Responsible for data persistence and retrieval.
 
 ---
 
-## 🧩 Conceptual Class Design (Deep Dive 2)
+## 🧩 Conceptual Class Design
 
 Although the project does not use Object-Oriented Programming classes,
 it is structured using **conceptual classes**, where each module represents
